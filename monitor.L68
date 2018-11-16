@@ -1,0 +1,56 @@
+00002000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/16/2018 10:33:23 AM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      : Monitor Project
+00000000                             3  * Written by : Raul Renteria
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00001000                             7      ORG    $1000
+00001000                             8  
+00001000= 4D 4F 4E 49 54 4F ...      9  SHELL:  DC.B    'MONITOR441>',0
+0000100C                            10  INBUF   DS.B 80         ;input buffer for commands
+0000105C= 00                        11          DC.B 0
+0000105D                            12  
+0000105D                            13  
+0000105D                            14  
+0000105D                            15  
+0000105D                            16  
+0000105D                            17  
+0000105D                            18  
+0000105D                            19  
+0000105D                            20  
+0000105D                            21  
+0000105D                            22  
+0000105D                            23  
+0000105D                            24  
+0000105D                            25  
+00002000                            26      ORG    $2000
+00002000                            27  START:                  ; first instruction of program
+00002000                            28  
+00002000                            29  CMD:
+00002000  43F8 1000                 30      LEA SHELL,A1       ; will print out MONITOR441>
+00002004  103C 000E                 31      MOVE.B #14,D0
+00002008  4E4F                      32      TRAP #15
+0000200A                            33  
+0000200A                            34  * Put program code here
+0000200A                            35  
+0000200A  FFFF FFFF                 36      SIMHALT             ; halt simulator
+0000200E                            37  
+0000200E                            38  * Put variables and constants here
+0000200E                            39  
+0000200E                            40      END    START        ; last line of source
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CMD                 2000
+INBUF               100C
+SHELL               1000
+START               2000

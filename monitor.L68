@@ -1,6 +1,6 @@
 00002000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 11/16/2018 10:33:23 AM
+Created On: 11/20/2018 12:59:11 PM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      : Monitor Project
@@ -8,49 +8,347 @@ Created On: 11/16/2018 10:33:23 AM
 00000000                             4  * Date       :
 00000000                             5  * Description:
 00000000                             6  *-----------------------------------------------------------
-00001000                             7      ORG    $1000
-00001000                             8  
-00001000= 4D 4F 4E 49 54 4F ...      9  SHELL:  DC.B    'MONITOR441>',0
-0000100C                            10  INBUF   DS.B 80         ;input buffer for commands
-0000105C= 00                        11          DC.B 0
-0000105D                            12  
-0000105D                            13  
-0000105D                            14  
-0000105D                            15  
-0000105D                            16  
-0000105D                            17  
-0000105D                            18  
-0000105D                            19  
-0000105D                            20  
-0000105D                            21  
-0000105D                            22  
-0000105D                            23  
-0000105D                            24  
-0000105D                            25  
-00002000                            26      ORG    $2000
-00002000                            27  START:                  ; first instruction of program
-00002000                            28  
-00002000                            29  CMD:
-00002000  43F8 1000                 30      LEA SHELL,A1       ; will print out MONITOR441>
-00002004  103C 000E                 31      MOVE.B #14,D0
-00002008  4E4F                      32      TRAP #15
-0000200A                            33  
-0000200A                            34  * Put program code here
-0000200A                            35  
-0000200A  FFFF FFFF                 36      SIMHALT             ; halt simulator
-0000200E                            37  
-0000200E                            38  * Put variables and constants here
-0000200E                            39  
-0000200E                            40      END    START        ; last line of source
+00000000  =0000000D                  7  CR EQU $0D
+00000000  =0000000A                  8  LF EQU $0A
+00001000                             9      ORG    $1000
+00001000                            10  
+00001000= 4D 4F 4E 49 54 4F ...     11  SHELL:  DC.B    'MONITOR441>',0
+0000100C                            12  INPUT   DS.B 80         ;input buffer for commands
+0000105C= 00                        13          DC.B 0
+0000105D                            14          
+0000105D                            15  ;Help Commands
+0000105D= 54 48 49 53 20 49 ...     16  USER DC.B 'THIS IS THE USER PROGRAM',0
+00001076= 4D 44 53 50 3A 20 ...     17  MDSPHELP DC.B 'MDSP: Outputs Address and Memory contents',CR,LF,'MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,0
+000010D5= 53 4F 52 54 57 3A ...     18  SORTWHELP DC.B 'SORTW: Sorts a block of memory. Default: Descending Order.',CR,LF,'A: Ascending order',CR,LF,'D: Descending order',CR,LF,'SORTW <address1> <address2> <order>',CR,LF,0
+00001160= 4D 4D 3A 20 44 69 ...     19  MMHELP DC.B 'MM: Displays and optionally modifies contents of memory at the specified address',CR,LF,'MM <size> <address>',CR,LF,'All addresses must be prefixed with $',CR,LF,0
+000011EF= 4D 53 3A 20 53 74 ...     20  MSHELP DC.B 'MS: Stores an ASCII string into memory starting at ADDRESS',CR,LF,'MS <ADDRESS> <STRING>',CR,LF,'All addresses must be prefixed with $',CR,LF,0
+0000126A= 42 54 53 54 3A 20 ...     21  BTSTHELP DC.B 'BTST: <STARTADDRESS> <ENDADDRESS>',CR,LF,'All vales are in hex and must be prefixed with $',CR,LF,0
+000012C0= 43 52 43 3A 20 63 ...     22  CRCHELP DC.B 'CRC: computes the CRC-16 checksum of the specified data',CR,LF,'CRC <startaddress> <endaddres>',CR,LF,'All vales are in hex and must be prefixed with $',CR,LF,0
+0000134C= 42 4D 4F 56 3A 20 ...     23  BMOVHELP DC.B 'BMOV: Moves N bytes from <SRCADDRESS> to <DESTADDRESS>',CR,LF,'BMOV <SRCADDRESS> <DESTADDRESS> <N>',CR,LF,'All values must be in hexadecimal and prefixed with $',CR,LF,0
+000013E1= 42 46 3A 20 46 69 ...     24  BFHELP DC.B 'BF: Fills memory from first address to second address with zero padded word data',CR,LF,'BF <STARTADDRESS> <ENDADDRESS> <WORD DATA>',CR,LF,'All addresses must be prefixed with $ and aligned to a word boundary',CR,LF,0
+000014A6= 42 53 43 48 3A 20 ...     25  BSCHHELP DC.B 'BSCH: Searches for the first occurence of <STRING> between <STARTADDRESS> and <ENDADDRESS>',CR,LF,'BSCH <STARTADDRESS> <ENDADDRESS> <STRING>',CR,LF,'All addresses must be prefixed with $',CR,LF,0
+00001555= 47 4F 3A 20 42 65 ...     26  GOHELP DC.B 'GO: Begins execution at ADDRESS',CR,LF,'GO <ADDRESS>',CR,LF,0
+00001585= 53 45 54 20 52 45 ...     27  SETHELP DC.B 'SET REGISTER: .<D{0-7} - A{0-6}> <DATA>  -  Sets <DATA> into <REGISTER>',0
+000015CD= 44 46 3A 20 44 69 ...     28  DFHELP DC.B 'DF: Displays nicely formatted register contents',CR,LF,0 
+000015FF= 45 58 49 54 3A 20 ...     29  EXITHELP DC.B 'EXIT: Halts execution',CR,LF,0
+00001617                            30  
+00001617                            31  ;Print out for registers
+00001617= 41 30 3D 00               32  A0REG: DC.B 'A0=',0
+0000161B= 41 31 3D 00               33  A1REG: DC.B 'A1=',0
+0000161F= 41 32 3D 00               34  A2REG: DC.B 'A2=',0
+00001623= 41 33 3D 00               35  A3REG: DC.B 'A3=',0
+00001627= 41 34 3D 00               36  A4REG: DC.B 'A4=',0
+0000162B= 41 35 3D 00               37  A5REG: DC.B 'A5=',0
+0000162F= 41 36 3D 00               38  A6REG: DC.B 'A6=',0
+00001633= 41 37 28 53 53 50 ...     39  A7REG: DC.B 'A7(SSP)=',0
+0000163C= 44 30 3D 00               40  D0REG: DC.B 'D0=',0
+00001640= 44 31 3D 00               41  D1REG: DC.B 'D1=',0
+00001644= 44 32 3D 00               42  D2REG: DC.B 'D2=',0
+00001648= 44 33 3D 00               43  D3REG: DC.B 'D3=',0
+0000164C= 44 34 3D 00               44  D4REG: DC.B 'D4=',0
+00001650= 44 35 3D 00               45  D5REG: DC.B 'D5=',0
+00001654= 44 36 3D 00               46  D6REG: DC.B 'D6=',0
+00001658= 44 37 3D 00               47  D7REG: DC.B 'D7=',0
+0000165C= 53 52 3D 00               48  SRREG: DC.B 'SR=',0
+00001660= 50 43 3D 00               49  PCREG: DC.B 'PC=',0
+00001664= 55 53 50 3D 00            50  USPREG: DC.B 'USP=',0
+00001669                            51  
+00001669                            52  ;Commands to compare input stings to. 
+00001669= 48 45 4C 50 00            53  HELPCOMMAND: DC.B 'HELP',0
+0000166E= 4D 44 53 50 00            54  MDSPCOMMAND DC.B 'MDSP',0
+00001673= 53 4F 52 54 57 00         55  SORTWCOMMAND DC.B 'SORTW',0
+00001679= 43 52 43 00               56  CRCCOMMAND DC.B 'CRC',0
+0000167D= 4D 4D 00                  57  MMCOMMAND DC.B 'MM',0
+00001680= 4D 53 00                  58  MSCOMMAND DC.B 'MS',0
+00001683= 42 46 00                  59  BFCOMMAND DC.B 'BF',0
+00001686= 42 4D 4F 56 00            60  BMOVCOMMAND DC.B 'BMOV',0
+0000168B= 42 54 53 54 00            61  BTSTCOMMAND DC.B 'BTST',0
+00001690= 42 53 43 48 00            62  BSCHCOMMAND DC.B 'BSCH',0
+00001695= 47 4F 00                  63  GOCOMMAND DC.B 'GO',0
+00001698= 44 46 00                  64  DFCOMMAND DC.B 'DF',0
+0000169B= 45 58 49 54 00            65  EXITCOMMAND DC.B 'EXIT',0
+000016A0                            66  
+000016A0                            67  
+000016A0                            68  
+000016A0                            69  
+000016A0                            70  
+000016A0                            71  
+000016A0                            72  
+000016A0                            73  
+000016A0                            74  
+00002000                            75      ORG    $2000
+00002000                            76  START:                  ; first instruction of program
+00002000                            77  
+00002000                            78  CMD:
+00002000  43F8 1000                 79      LEA SHELL,A1       ; will print out MONITOR441>
+00002004  103C 000E                 80      MOVE.B #14,D0
+00002008  4E4F                      81      TRAP #15
+0000200A  43F8 100C                 82      LEA INPUT,A1        ; parses cmd and reads command
+0000200E  103C 0002                 83      MOVE.B #2,D0
+00002012  4E4F                      84      TRAP #15
+00002014  3C01                      85      MOVE.W D1,D6        
+00002016  B27C 0000                 86      CMP.W #0,D1         ; check if the string is empty
+0000201A  67E4                      87      BEQ CMD             ; restart 
+0000201C  303C 0004                 88      MOVE.W #4, D0
+00002020  6100 0060                 89      BSR STRCMP
+00002024  4A40                      90      TST.W D0            
+Line 91 ERROR: Undefined symbol
+00002026  6600 9CEE                 91      BNE MDSPIN
+0000202A  6100 015C                 92      BSR PRINTHELP
+0000202E  4CDF 7FFF                 93      MOVEM.L (SP)+, A0-A6/D0-D7
+00002032  60CC                      94      BRA CMD
+00002034                            95      
+00002034                            96  MDSP:
+00002034  2A49                      97      MOVE.L A1,A5
+00002036  5A4D                      98      ADD #5,A5
+00002038  2C4D                      99      MOVE.L A5,A6
+Line 100 ERROR: Undefined symbol
+0000203A  6100 9CDA                100      BSR LOCBOUND
+Line 101 ERROR: Undefined symbol
+0000203E  6100 9CD6                101      BSR PARSEIN         ;PARSE FIRST ADDRESS
+00002042  4A41                     102      TST D1
+Line 103 ERROR: Undefined symbol
+00002044  6600 9CD0                103      BNE MDSP_ERR
+00002048  2A00                     104      MOVE.L D0,D5
+0000204A  528E                     105      ADD.L #1,A6
+0000204C  2A4E                     106      MOVE.L A6,A5
+Line 107 ERROR: Undefined symbol
+0000204E  6100 9CC6                107      BSR LOCBOUND
+00002052  D3C6                     108      ADD.L D6,A1         ;CHECK IF 2ND ADDRESS IS VALID
+00002054  BDC9                     109      CMP.L A1,A6
+00002056  6700 0010                110      BEQ MDSPBINARY
+0000205A  2A45                     111      MOVE.L D5,A5
+0000205C  2C45                     112      MOVE.L D5,A6
+0000205E  DDFC 00000010            113      ADD.L #16,A6
+00002064  6000 0010                114      BRA MDSP_GO
+00002068                           115  MDSPBINARY:             ;DISPLAY 16 BYTES IF ONLY ONE ARG GIVEN
+Line 116 ERROR: Undefined symbol
+00002068  6100 9CAC                116      BSR PARSEIN         ;PARSE FIRST ADDRESS
+0000206C  4A41                     117      TST D1
+Line 118 ERROR: Undefined symbol
+0000206E  6600 9CA6                118      BNE MDSP_ERR
+00002072  2A45                     119      MOVE.L D5,A5
+00002074  2C40                     120      MOVE.L D0,A6
+00002076                           121  MDSP_GO:
+00002076  61BC                     122      BSR MDSP
+00002078  4CDF 7FFF                123      MOVEM.L (SP)+, A0-A6/D0-D7
+0000207C  6082                     124      BRA CMD
+0000207E                           125      
+0000207E                           126   
+0000207E                           127      
+0000207E                           128  
+0000207E                           129  
+0000207E  FFFF FFFF                130      SIMHALT             ; halt simulator
+00002082                           131      
+00002082                           132  STRCMP:         ;STRING COMPARE, STRINGS AT (A5) AND (A6), LENGTH IN D0.W, RESULT (0 IF EQUAL) RETURNED IN D0
+00002082  48E7 0006                133      MOVEM.L A5/A6, -(SP)
+00002086  4A40                     134      TST D0      ;ZERO BYTES TO COMPARE?
+00002088  6700 0014                135      BEQ SCNOTEQ
+0000208C  5380                     136      SUB.L #1,D0
+0000208E                           137  STRCMPLOOP:
+0000208E  BD0D                     138      CMP.B (A5)+,(A6)+
+00002090  6600 000C                139      BNE SCNOTEQ     ; STRINGS NOT EQUAL IF CHARS DO NOT MATCH
+00002094  4A40                     140      TST.W D0
+00002096  57C8 FFF6                141      DBEQ.W D0,STRCMPLOOP    ;  DO AT MOST D0 COMPARISONS
+0000209A  6000 000A                142      BRA SCEQ  ; KEEP COMPARING OTHERWISE
+0000209E                           143  SCNOTEQ:
+0000209E  7001                     144      MOVE.L #1,D0
+000020A0  4CDF 6000                145      MOVEM.L (SP)+, A5/A6    ;RETURN 1
+000020A4  4E75                     146      RTS
+000020A6                           147  SCEQ:
+000020A6  4CDF 6000                148      MOVEM.L (SP)+, A5/A6    ;RETURN 0
+000020AA  4E75                     149      RTS
+000020AC                           150      
+000020AC                           151  
+000020AC                           152  
+000020AC                           153  
+000020AC                           154  MDSPHELPER:
+000020AC  48E7 8040                155      MOVEM.L D0/A1, -(SP)
+000020B0  43F8 1076                156      LEA MDSPHELP, A1
+000020B4  103C 000D                157      MOVE.B #13,D0
+000020B8  4E4F                     158      TRAP #15
+000020BA  4CDF 0201                159      MOVEM.L (SP)+, D0/A1
+000020BE  4E75                     160      RTS
+000020C0                           161  
+000020C0                           162  SORTWHELPER:
+000020C0  48E7 8040                163      MOVEM.L D0/A1, -(SP)
+000020C4  43F8 10D5                164      LEA SORTWHELP, A1
+000020C8  103C 000D                165      MOVE.B #13,D0
+000020CC  4E4F                     166      TRAP #15
+000020CE  4CDF 0201                167      MOVEM.L (SP)+, D0/A1
+000020D2  4E75                     168      RTS
+000020D4                           169  
+000020D4                           170  MMHELPER:
+000020D4  48E7 8040                171      MOVEM.L D0/A1, -(SP)
+000020D8  43F8 1160                172      LEA MMHELP, A1
+000020DC  103C 000D                173      MOVE.B #13,D0
+000020E0  4E4F                     174      TRAP #15
+000020E2  4CDF 0201                175      MOVEM.L (SP)+, D0/A1
+000020E6  4E75                     176      RTS
+000020E8                           177      
+000020E8                           178  MSHELPER:
+000020E8  48E7 8040                179      MOVEM.L D0/A1, -(SP)
+000020EC  43F8 11EF                180      LEA MSHELP, A1
+000020F0  103C 000D                181      MOVE.B #13,D0
+000020F4  4E4F                     182      TRAP #15
+000020F6  4CDF 0201                183      MOVEM.L (SP)+, D0/A1
+000020FA  4E75                     184      RTS
+000020FC                           185      
+000020FC                           186  BFHELPER:
+000020FC  48E7 8040                187      MOVEM.L D0/A1, -(SP)
+00002100  43F8 13E1                188      LEA BFHELP, A1
+00002104  103C 000D                189      MOVE.B #13,D0
+00002108  4E4F                     190      TRAP #15
+0000210A  4CDF 0201                191      MOVEM.L (SP)+, D0/A1
+0000210E  4E75                     192      RTS
+00002110                           193      
+00002110                           194  BMOVHELPER:
+00002110  48E7 8040                195      MOVEM.L D0/A1, -(SP)
+00002114  43F8 134C                196      LEA BMOVHELP, A1
+00002118  103C 000D                197      MOVE.B #13,D0
+0000211C  4E4F                     198      TRAP #15
+0000211E  4CDF 0201                199      MOVEM.L (SP)+, D0/A1
+00002122  4E75                     200      RTS
+00002124                           201  
+00002124                           202  BTSTHELPER:
+00002124  48E7 8040                203      MOVEM.L D0/A1, -(SP)
+00002128  43F8 126A                204      LEA BTSTHELP, A1
+0000212C  103C 000D                205      MOVE.B #13,D0
+00002130  4E4F                     206      TRAP #15
+00002132  4CDF 0201                207      MOVEM.L (SP)+, D0/A1
+00002136  4E75                     208      RTS
+00002138                           209      
+00002138                           210  BSCHHELPER:
+00002138  48E7 8040                211      MOVEM.L D0/A1, -(SP)
+0000213C  43F8 14A6                212      LEA BSCHHELP, A1
+00002140  103C 000D                213      MOVE.B #13,D0
+00002144  4E4F                     214      TRAP #15
+00002146  4CDF 0201                215      MOVEM.L (SP)+, D0/A1
+0000214A  4E75                     216      RTS
+0000214C                           217  
+0000214C                           218  GOHELPER:
+0000214C  48E7 8040                219      MOVEM.L D0/A1, -(SP)
+00002150  43F8 1555                220      LEA GOHELP, A1
+00002154  103C 000D                221      MOVE.B #13,D0
+00002158  4E4F                     222      TRAP #15
+0000215A  4CDF 0201                223      MOVEM.L (SP)+, D0/A1
+0000215E  4E75                     224      RTS
+00002160                           225      
+00002160                           226  SETHELPER:
+00002160  48E7 8040                227      MOVEM.L D0/A1, -(SP)
+00002164  43F8 1585                228      LEA SETHELP, A1
+00002168  103C 000D                229      MOVE.B #13,D0
+0000216C  4E4F                     230      TRAP #15
+0000216E  4CDF 0201                231      MOVEM.L (SP)+, D0/A1
+00002172  4E75                     232      RTS
+00002174                           233  CRCHELPER:
+00002174  48E7 8040                234      MOVEM.L D0/A1, -(SP)
+00002178  43F8 12C0                235      LEA CRCHELP, A1
+0000217C  103C 000D                236      MOVE.B #13,D0
+00002180  4E4F                     237      TRAP #15
+00002182  4CDF 0201                238      MOVEM.L (SP)+, D0/A1
+00002186  4E75                     239      RTS
+00002188                           240  
+00002188                           241  
+00002188                           242  PRINTHELP:
+00002188  6100 FF22                243      BSR MDSPHELPER
+0000218C  6100 FF32                244      BSR SORTWHELPER
+00002190  6100 FF42                245      BSR MMHELPER
+00002194  6100 FF52                246      BSR MSHELPER
+00002198  6100 FF62                247      BSR BFHELPER
+0000219C  6100 FF72                248      BSR BMOVHELPER
+000021A0  6182                     249      BSR BTSTHELPER
+000021A2  6194                     250      BSR BSCHHELPER
+000021A4  61A6                     251      BSR GOHELPER
+000021A6  61B8                     252      BSR SETHELPER
+000021A8  61CA                     253      BSR CRCHELPER
+000021AA  48E7 8040                254      MOVEM.L D0/A1, -(SP)
+000021AE  43F8 15CD                255      LEA DFHELP, A1
+000021B2  103C 000D                256      MOVE.B #13,D0
+000021B6  4E4F                     257      TRAP #15
+000021B8  43F8 15FF                258      LEA EXITHELP, A1
+000021BC  4CDF 0201                259      MOVEM.L (SP)+, D0/A1
+000021C0  4E75                     260      RTS
+000021C2                           261  
+000021C2                           262  
+000021C2                           263  
+000021C2                           264      END    START        ; last line of source
 
-No errors detected
+7 errors detected
 No warnings generated
 
 
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
+A0REG               1617
+A1REG               161B
+A2REG               161F
+A3REG               1623
+A4REG               1627
+A5REG               162B
+A6REG               162F
+A7REG               1633
+BFCOMMAND           1683
+BFHELP              13E1
+BFHELPER            20FC
+BMOVCOMMAND         1686
+BMOVHELP            134C
+BMOVHELPER          2110
+BSCHCOMMAND         1690
+BSCHHELP            14A6
+BSCHHELPER          2138
+BTSTCOMMAND         168B
+BTSTHELP            126A
+BTSTHELPER          2124
 CMD                 2000
-INBUF               100C
+CR                  D
+CRCCOMMAND          1679
+CRCHELP             12C0
+CRCHELPER           2174
+D0REG               163C
+D1REG               1640
+D2REG               1644
+D3REG               1648
+D4REG               164C
+D5REG               1650
+D6REG               1654
+D7REG               1658
+DFCOMMAND           1698
+DFHELP              15CD
+EXITCOMMAND         169B
+EXITHELP            15FF
+GOCOMMAND           1695
+GOHELP              1555
+GOHELPER            214C
+HELPCOMMAND         1669
+INPUT               100C
+LF                  A
+MDSP                2034
+MDSPBINARY          2068
+MDSPCOMMAND         166E
+MDSPHELP            1076
+MDSPHELPER          20AC
+MDSP_GO             2076
+MMCOMMAND           167D
+MMHELP              1160
+MMHELPER            20D4
+MSCOMMAND           1680
+MSHELP              11EF
+MSHELPER            20E8
+PCREG               1660
+PRINTHELP           2188
+SCEQ                20A6
+SCNOTEQ             209E
+SETHELP             1585
+SETHELPER           2160
 SHELL               1000
+SORTWCOMMAND        1673
+SORTWHELP           10D5
+SORTWHELPER         20C0
+SRREG               165C
 START               2000
+STRCMP              2082
+STRCMPLOOP          208E
+USER                105D
+USPREG              1664

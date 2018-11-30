@@ -94,6 +94,43 @@ COLON: DC.B ' : ',0
 PC_STORE DS.L 1
 REGNUM DS.B 1
 REG_STORE DS.L 1
+
+
+*exception programs
+    ORG $6000       ; Go
+    MOVE.L #13,D0
+    LEA USERPROGRAM,A1
+    TRAP #15
+    BRA SHELL 
+    
+    *technically all these use go
+    ORG $6010
+    DC.W $F000      ; Line F emulator
+    BRA SHELL
+    
+    ORG $6020
+    DC.W $A000      ; Line A emulator
+    BRA SHELL
+    
+    ORG $6030       ; Illegal instruciton
+    DC.W $4AFA          
+    BRA SHELL
+    
+    ORG $6040       ; divide by zero
+    MOVE.L #2,D0  
+    MOVE.L #0,D1
+    DIVU.W D1,D0
+    BRA SHELL
+
+    ORG $6050
+    MOVE.W #20,D0   ; check instruction
+    CHK.W #10,D0
+    BRA SHELL
+    
+    ORG $6060
+    ANDI.W #$00FF,SR    ;privelage error
+    OR.W #$1000, SR     
+    BRA SHELL
   
       
     ORG    $3000
@@ -770,7 +807,7 @@ FOR_PARSE:
     CMP.B #'0',D3   ; negative
     BLT PARSE_ERR
     CMP.B #'9',D3
-    BLE NUM_CHECK   ; WITHIN 0-9 OR A-F?
+    BLE NUM_CHECK   
     CMP.B #'A',D3
     BGE HEX_CHECK
     BRA PARSE_ERR
@@ -801,23 +838,23 @@ MDSP:
     BNE MD
     ADD.L #16, A6   ; if A6=0 add 16 to get the end address.
 MD:
-    MOVE.B #16,D2   ; base of number to display for trap function
-    LEA ADDRESS,A1  ; ADDRESS prompt to print
+    MOVE.B #16,D2   
+    LEA ADDRESS,A1  ; print ADDRESS
     MOVE.B #14,D0
-    TRAP #15        ;Display the NULL terminated string pointed to by (A1).
+    TRAP #15        
     MOVE.L A5,D1
-    MOVE.B #15,D0   ;Display the unsigned number in D1.L converted to number base (2 through 36) contained in D2.B. 
+    MOVE.B #15,D0   ;print acutal address. 
     TRAP #15        
     LEA COLON,A1    ; put a COLON
     MOVE.B #14,D0
-    TRAP #15        ; 
+    TRAP #15        
     CLR.L D1
-    MOVE.B (A5)+,D1 ; move contents pointed to by A5 to D1 to display 
+    MOVE.B (A5)+,D1 ; print contents at A5. data to print at address 
     MOVE.B #15,D0
-    TRAP #15        ; display D1 contents (data)
+    TRAP #15        
     LEA NL,A1
     MOVE.B #13,D0
-    TRAP #15        ; print empty space for new input
+    TRAP #15        ; waiting for new input
     CMP A5,A6       ; are we at address2?
     BGE MD          ; keep going if we're not
     MOVEM.L (SP)+,A0-A6/D0-D7
@@ -909,8 +946,8 @@ MMWLOOP:
     MOVE.W D0,(A0)  ; Move data
     BRA MMWLOOP
 
-MM_LONG:             ;BYTE SIZE MM
-    SUBA.L #4, A0     ; SUBTRACT JUST THE FIRST TIME
+MM_LONG:            
+    SUBA.L #4, A0     
 MMLLOOP:    
     MOVE.B #16,D2   
     ADDA #4, A0     
@@ -1319,44 +1356,6 @@ FOUND:
     TRAP #15                  
     MOVEM.L (SP)+,A0-A6/D0-D7
     RTS
-
-      
-    
-    ORG $6000       ; Go
-    MOVE.L #13,D0
-    LEA USERPROGRAM,A1
-    TRAP #15
-    BRA SHELL 
-    
-    *technically all these use go
-    ORG $6010
-    DC.W $F000      ; Line F emulator
-    BRA SHELL
-    
-    ORG $6020
-    DC.W $A000      ; Line A emulator
-    BRA SHELL
-    
-    ORG $6030       ; Illegal instruciton
-    DC.W $4AFA          
-    BRA SHELL
-    
-    ORG $6040       ; divide by zero
-    MOVE.L #1,D0  
-    MOVE.L #0,D1
-    DIVU.W D1,D0
-    BRA SHELL
-
-    ORG $6050
-    MOVE.W #1,D0   ; check instruction
-    CLR.W D1
-    CHK.W D1,D0
-    BRA SHELL
-    
-    ORG $6060
-    ANDI.W #$00FF,SR    ;privelage error
-    OR.W #$1000, SR     
-    BRA SHELL
     
     END START
     

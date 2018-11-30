@@ -31,17 +31,19 @@ FONT DC.B 'FONT',0
 ECHOCOMMAND DC.B 'ECHO',0
     
 **Help Display prompts**
-USERPROMPT DC.B 'THIS IS THE USER PROGRAM',0
-MDSPHELPPROMPT DC.B 'MDSP: Outputs Address and Memory contents',CR,LF,'MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,0
-SORTWHELPPROMPT DC.B 'SORTW: Sorts a block of memory. Default: Descending Order.',CR,LF,'A: Ascending order',CR,LF,'D: Descending order',CR,LF,'SORTW <address1> <address2> <order>',CR,LF,0
-MMHELPPROMPT DC.B 'MM: Displays and optionally modifies contents of memory at the specified address',CR,LF,'MM <size> <address>',CR,LF,0
-MSHELPPROMPT DC.B 'MS: Stores an ASCII string into memory starting at ADDRESS',CR,LF,'MS <ADDRESS> <STRING>',CR,LF,0
+USERPROGRAM DC.B 'Do cool shit here: ',0
+MDSPHELPPROMPT DC.B 'MDSP: Outputs Address and Memory contents from <address1> to <address2>',CR,LF,'MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,0
+SORTWHELPPROMPT DC.B 'SORTW: Sorts a block of memory from <address1> to <address2>. The order is specified by the following.',CR,LF,'A: Ascending order',CR,LF,'D: Descending order',CR,LF,'SORTW <address1> <address2> <order>',CR,LF,0
+MMHELPPROMPT DC.B 'MM: Display memory and optionally enter new data. Can specify Byte, Word, or Long size.',CR,LF,'MM <size> <address>',CR,LF,0
+MSHELPPROMPT DC.B 'MS: Alters memory by setting data into the specified address. Can take ASCII string or HEX',CR,LF,'MS <address> <string>',CR,LF,0
 BTSTHELPPROMPT DC.B 'BTST: <address1> <address2>',CR,LF,0
 BMOVHELPPROMPT DC.B 'BMOV: Moves bytes of memory from <address1> to <address2>',CR,LF,'BMOV <address1> <address2> <n>',CR,LF,0
-BFHELPPROMPT DC.B 'BF: Fills memory from first address to second address with zero padded word data',CR,LF,'BF <address1> <address2> <data>',CR,LF,0
+BFHELPPROMPT DC.B 'BF: Fills memory from <address1> to <address2> with the provieded data as input. <data> must be word sized  ',CR,LF,'BF <address1> <address2> <data>',CR,LF,0
 BSCHHELPPROMPT DC.B 'BSCH: Searches for literal <string>  between <address1> and <address2>',CR,LF,'BSCH <address1> <address2> <string>',CR,LF,0
 GOHELPPROMPT DC.B 'GO: Begin execution of program at address',CR,LF,'GO <address>',CR,LF,0
 DFHELPPROMPT DC.B 'DF: Displays register contents',CR,LF,0 
+FONTHELPROMPT DC.B 'FONT: Changes the color of the font.',CR,LF,'<color> is a 6 digit hex number specifing the RGB. 0xBBGGRR: eg: FONT <color>',CR,LF,0
+ECHOHELPPROMPT DC.B 'ECHO: prints put what the user input',CR,LF,'ECHO <string>',CR,LF,0
 EXITHELPPROMPT DC.B 'EXIT: Stops Program',CR,LF,0
 NL: DC.B 0
     
@@ -471,7 +473,7 @@ FONT_FUNC:
     
 FONT_ERR:
     MOVEM.L (SP)+, A0-A6/D0-D7
-    BSR GOHELP
+    BSR FONTHELP
     BRA SHELL
     
     
@@ -578,6 +580,22 @@ GOHELP:
     TRAP #15
     MOVEM.L (SP)+, D0/A1
     RTS
+    
+FONTHELP:
+    MOVEM.L D0/A1, -(SP)
+    LEA FONTHELPROMPT, A1
+    MOVE.B #13,D0
+    TRAP #15
+    MOVEM.L (SP)+, D0/A1
+    RTS
+    
+ECHOHELP:
+    MOVEM.L D0/A1, -(SP)
+    LEA ECHOHELPPROMPT, A1
+    MOVE.B #13,D0
+    TRAP #15
+    MOVEM.L (SP)+, D0/A1
+    RTS
 
 
 ALL_HELP_PROMPTS:
@@ -589,6 +607,8 @@ ALL_HELP_PROMPTS:
     BSR BMOVHELP
     BSR BSCHHELP
     BSR GOHELP
+    BSR FONTHELP
+    BSR ECHOHELP
     MOVEM.L D0/A1, -(SP)
     LEA DFHELPPROMPT, A1
     MOVE.B #13,D0
@@ -1304,7 +1324,7 @@ FOUND:
     
     ORG $6000       ; Go
     MOVE.L #13,D0
-    LEA USERPROMPT,A1
+    LEA USERPROGRAM,A1
     TRAP #15
     BRA SHELL 
     
@@ -1322,7 +1342,7 @@ FOUND:
     BRA SHELL
     
     ORG $6040       ; divide by zero
-    MOVE.L #10,D0  
+    MOVE.L #1,D0  
     MOVE.L #0,D1
     DIVU.W D1,D0
     BRA SHELL

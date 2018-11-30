@@ -1,6 +1,6 @@
 00003000 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 11/30/2018 9:37:48 AM
+Created On: 11/30/2018 10:37:13 AM
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      : Monitor Project
@@ -35,1314 +35,1334 @@ Created On: 11/30/2018 9:37:48 AM
 000020AD= 45 43 48 4F 00            31  ECHOCOMMAND DC.B 'ECHO',0
 000020B2                            32      
 000020B2                            33  **Help Display prompts**
-000020B2= 54 48 49 53 20 49 ...     34  USERPROMPT DC.B 'THIS IS THE USER PROGRAM',0
-000020CB= 4D 44 53 50 3A 20 ...     35  MDSPHELPPROMPT DC.B 'MDSP: Outputs Address and Memory contents',CR,LF,'MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,0
-0000212A= 53 4F 52 54 57 3A ...     36  SORTWHELPPROMPT DC.B 'SORTW: Sorts a block of memory. Default: Descending Order.',CR,LF,'A: Ascending order',CR,LF,'D: Descending order',CR,LF,'SORTW <address1> <address2> <order>',CR,LF,0
-000021B5= 4D 4D 3A 20 44 69 ...     37  MMHELPPROMPT DC.B 'MM: Displays and optionally modifies contents of memory at the specified address',CR,LF,'MM <size> <address>',CR,LF,0
-0000221D= 4D 53 3A 20 53 74 ...     38  MSHELPPROMPT DC.B 'MS: Stores an ASCII string into memory starting at ADDRESS',CR,LF,'MS <ADDRESS> <STRING>',CR,LF,0
-00002271= 42 54 53 54 3A 20 ...     39  BTSTHELPPROMPT DC.B 'BTST: <address1> <address2>',CR,LF,0
-0000228F= 42 4D 4F 56 3A 20 ...     40  BMOVHELPPROMPT DC.B 'BMOV: Moves bytes of memory from <address1> to <address2>',CR,LF,'BMOV <address1> <address2> <n>',CR,LF,0
-000022EB= 42 46 3A 20 46 69 ...     41  BFHELPPROMPT DC.B 'BF: Fills memory from first address to second address with zero padded word data',CR,LF,'BF <address1> <address2> <data>',CR,LF,0
-0000235F= 42 53 43 48 3A 20 ...     42  BSCHHELPPROMPT DC.B 'BSCH: Searches for literal <string>  between <address1> and <address2>',CR,LF,'BSCH <address1> <address2> <string>',CR,LF,0
-000023CD= 47 4F 3A 20 42 65 ...     43  GOHELPPROMPT DC.B 'GO: Begin execution of program at address',CR,LF,'GO <address>',CR,LF,0
-00002407= 44 46 3A 20 44 69 ...     44  DFHELPPROMPT DC.B 'DF: Displays register contents',CR,LF,0 
-00002428= 45 58 49 54 3A 20 ...     45  EXITHELPPROMPT DC.B 'EXIT: Stops Program',CR,LF,0
-0000243E= 00                        46  NL: DC.B 0
-0000243F                            47      
-0000243F                            48  **Print out for registers**
-0000243F= 41 30 3A 20 00            49  A0REG: DC.B 'A0: ',0
-00002444= 41 31 3A 00               50  A1REG: DC.B 'A1:',0
-00002448= 41 32 3A 20 00            51  A2REG: DC.B 'A2: ',0
-0000244D= 41 33 3A 20 00            52  A3REG: DC.B 'A3: ',0
-00002452= 41 34 3A 20 00            53  A4REG: DC.B 'A4: ',0
-00002457= 41 35 3A 20 00            54  A5REG: DC.B 'A5: ',0
-0000245C= 41 36 3A 00               55  A6REG: DC.B 'A6:',0
-00002460= 41 37 2F 53 53 50 ...     56  A7REG: DC.B 'A7/SSP:',0
-00002468= 44 30 3A 20 00            57  D0REG: DC.B 'D0: ',0
-0000246D= 44 31 3A 20 00            58  D1REG: DC.B 'D1: ',0
-00002472= 44 32 3A 20 00            59  D2REG: DC.B 'D2: ',0
-00002477= 44 33 3A 20 00            60  D3REG: DC.B 'D3: ',0
-0000247C= 44 34 3A 20 00            61  D4REG: DC.B 'D4: ',0
-00002481= 44 35 3A 20 00            62  D5REG: DC.B 'D5: ',0
-00002486= 44 36 3A 20 00            63  D6REG: DC.B 'D6: ',0
-0000248B= 44 37 3A 20 00            64  D7REG: DC.B 'D7: ',0
-00002490= 55 53 50 3A 20 00         65  USPREG: DC.B 'USP: ',0
-00002496= 53 52 3A 20 00            66  SRREG: DC.B 'SR: ',0
-0000249B= 50 43 3A 20 00            67  PCREG: DC.B 'PC: ',0
-000024A0                            68  
-000024A0                            69  **exception prompts**
-000024A0                            70  ** GO $6010 - LINE F
-000024A0                            71  ** GO $6020 - LINE A
-000024A0                            72  ** GO $6030 - ILLEGAL INSTUCTION
-000024A0                            73  ** GO $6040 - Divide by Zero
-000024A0                            74  ** GO $6050 - Check
-000024A0                            75  ** GO $6060 - Privalege
-000024A0= 41 64 64 72 65 73 ...     76  ADDRESS_ER: DC.B 'Address Trap Error ',0
-000024B4= 49 6C 6C 65 67 61 ...     77  ILLEGAL_ER: DC.B 'Illegal Instruction Trap Error',0
-000024D3= 50 72 69 76 65 6C ...     78  PRIVALAGE_ER: DC.B 'Privelage Violation Exception',0
-000024F1= 44 69 76 69 64 65 ...     79  DIVIDE_Z_ER: DC.B 'Divide by 0 error',0
-00002503= 43 68 65 63 6B 20 ...     80  CHECK_ER: DC.B 'Check instruction error',0
-0000251B= 4C 69 6E 65 20 41 ...     81  LINEA_ER: DC.B 'Line A Emulator exception',0
-00002535= 4C 69 6E 65 20 46 ...     82  LINEF_ER: DC.B 'Line F Emulator exception',0 
-0000254F                            83  
-0000254F                            84  *Strings to print out
-0000254F= 47 4F 20 41 44 44 ...     85  GO_ADDRESS: DC.B 'GO ADDRESS: ',0
-0000255C= 44 69 64 6E 74 20 ...     86  NO_STRING_MATCH DC.B 'Didnt find string',0
-0000256E= 46 6F 75 6E 64 20 ...     87  STRING_MATCH DC.B 'Found the String!!',0
-00002581= 41 44 44 52 45 53 ...     88  ADDRESS: DC.B 'ADDRESS ',0
-0000258A= 20 3A 20 00               89  COLON: DC.B ' : ',0
-0000258E                            90  
-0000258E                            91  *Storage loction for PC, SSR, 
-0000258E                            92  PC_STORE DS.L 1
-00002592                            93  REGNUM DS.B 1
-00002594                            94  REG_STORE DS.L 1
-00002598                            95    
-00002598                            96        
-00003000                            97      ORG    $3000
-00003000                            98  START:
-00003000                            99  
-00003000                           100      **exception vectors**
-00003000  21FC 0000357A 000C       101      MOVE.L #ADDRESS_ERRORV,$C
-00003008  21FC 000035B0 0010       102      MOVE.L #ILLEGAL_INSTRV,$10
-00003010  21FC 000035F8 0014       103      MOVE.L #DIVIDE_ZEROV,$14
-00003018  21FC 0000361C 0018       104      MOVE.L #CHECK_INSTRV,$18
-00003020  21FC 000035D4 0020       105      MOVE.L #PRIVALEGEV,$20
-00003028  21FC 00003640 0028       106      MOVE.L #LINEAV,$28
-00003030  21FC 00003664 002C       107      MOVE.L #LINEFV,$2C
-00003038  21FC 00003572 0084       108      MOVE.L #TRAPING_HOES,$84  
-00003040                           109      
-00003040                           110  INIT:
-00003040  6000 0006                111      BRA SHELL
-00003044                           112  SHELL_RESET:
-00003044  4CDF 7FFF                113      MOVEM.L (SP)+, A0-A6/D0-D7
-00003048                           114  SHELL:
-00003048  48E7 FFFE                115      MOVEM.L A0-A6/D0-D7, -(SP)
-0000304C  43F8 2000                116      LEA SHELL_PROMPT,A1       ; will print out MONITOR441>
-00003050  103C 000E                117      MOVE.B #14,D0
-00003054  4E4F                     118      TRAP #15
-00003056  43F8 200C                119      LEA INPUT,A1
-0000305A  103C 0002                120      MOVE.B #2,D0        ; parse cmd and read input
-0000305E  4E4F                     121      TRAP #15
-00003060  3C01                     122      MOVE.W D1,D6        ; keep length of string for comparisons
-00003062  B27C 0000                123      CMP.W #0,D1         ; check if the input string is empty
-00003066  67DC                     124      BEQ SHELL_RESET     ; if empty, restart prompt
-00003068  4BF8 200C                125      LEA INPUT,A5        ; put into A5
-0000306C  4DF8 2076                126      LEA MDSPCOMMAND,A6  ; load MDSP command into A6
-00003070  303C 0004                127      MOVE.W #4,D0        ; since MDSP is 4 char long, put 4 into D0 for comp
-00003074  6100 04D2                128      BSR CHECK_MATCH      ; compare the two stirngs
-00003078  4A40                     129      TST.W D0            ; check if D0 == 0
-0000307A  6600 005C                130      BNE MM_FUNC         ; if false, there is no match, so branch to test next instruction
-0000307E                           131      
-0000307E                           132      **Code to execute MDSP if the test above is true.
-0000307E  2A49                     133      MOVE.L A1,A5
-00003080  5A4D                     134      ADD #5,A5           ; Skip to address1
-00003082  2C4D                     135      MOVE.L A5,A6
-00003084  6100 04AC                136      BSR FIND_END        ; find the end of address1
-00003088  6100 05FE                137      BSR COMMAND_PARSE         ; A5 has begining of address1 and A6 has end of this. parse this address.
-0000308C  4A41                     138      TST D1              ; D0 will hold address1
-0000308E  6600 003C                139      BNE MDSP_ERR        ; wring type of address
-00003092  2400                     140      MOVE.L D0,D2
-00003094  528E                     141      ADD.L #1,A6         ; go to address2
-00003096  2A4E                     142      MOVE.L A6,A5         
-00003098  6100 0498                143      BSR FIND_END        ; find end of address2
-0000309C  D3C6                     144      ADD.L D6,A1         ; increment A1 to end of command
-0000309E  BDC9                     145      CMP.L A1,A6         ; compare contents of A1 to A6 to ensure address2 is correct
-000030A0  6700 0010                146      BEQ MDSP_2_ARGS     ; two addresses were given
-000030A4  2A42                     147      MOVE.L D2,A5        ; A5= address1, A6=address2
-000030A6  2C42                     148      MOVE.L D2,A6
-000030A8  DDFC 00000010            149      ADD.L #16,A6        ; add 16 to address1 since only 1 address was given
-000030AE  6000 0010                150      BRA MDSP_EX
-000030B2                           151      
-000030B2                           152  MDSP_2_ARGS:             
-000030B2  6100 05D4                153      BSR COMMAND_PARSE         
-000030B6  4A41                     154      TST D1
-000030B8  6600 0012                155      BNE MDSP_ERR
-000030BC  2A42                     156      MOVE.L D2,A5
-000030BE  2C40                     157      MOVE.L D0,A6
-000030C0                           158  MDSP_EX:
-000030C0  6100 0634                159      BSR MDSP
-000030C4  4CDF 7FFF                160      MOVEM.L (SP)+, A0-A6/D0-D7
-000030C8  6000 FF7E                161      BRA SHELL
-000030CC                           162      
-000030CC                           163  MDSP_ERR:
-000030CC  6100 03D8                164      BSR MDSPHELP      
-000030D0  4CDF 7FFF                165      MOVEM.L (SP)+, A0-A6/D0-D7
-000030D4  6000 FF72                166      BRA SHELL
-000030D8                           167  
-000030D8                           168  *Check for MM 
-000030D8                           169  MM_FUNC:
-000030D8  4DF8 2081                170      LEA MMCOMMAND,A6
-000030DC  303C 0002                171      MOVE.W #2,D0    ; MM command size is 2
-000030E0  6100 0466                172      BSR CHECK_MATCH ; check if input is MM
-000030E4  4A40                     173      TST.W D0                   
-000030E6  6600 0072                174      BNE SW_FUNC     ; Not MM? Go to SORTW
-000030EA                           175      
-000030EA                           176      **Code to execute MM
-000030EA  5A8D                     177      ADD.L #5,A5     ; skip to size arg
-000030EC  4DF8 200C                178      LEA INPUT,A6
-000030F0  DDC6                     179      ADD.L D6,A6     ; PPOINT A6 to end of address
-000030F2  6100 0594                180      BSR COMMAND_PARSE
-000030F6  4A41                     181      TST D1
-000030F8  6700 000E                182      BEQ MM_CHECK_SIZE
-000030FC  6100 036C                183      BSR MMHELP      
-00003100  4CDF 7FFF                184      MOVEM.L (SP)+, A0-A6/D0-D7
-00003104  6000 FF42                185      BRA SHELL
-00003108                           186      
-00003108                           187  MM_CHECK_SIZE:
-00003108  558D                     188      SUB.L #2,A5     ; decrement A5 by two to go back to the size
-0000310A  2040                     189      MOVE.L D0,A0    ; put address to modify in D0 into A0
-0000310C  0C15 0042                190      CMP.B #'B',(A5) ; check if the parsed arguement is B.
-00003110  6700 001E                191      BEQ MM_B
-00003114  0C15 0057                192      CMP.B #'W',(A5)
-00003118  6700 0024                193      BEQ MM_W
-0000311C  0C15 004C                194      CMP.B #'L',(A5)
-00003120  6700 002A                195      BEQ MM_L
-00003124  6100 0344                196      BSR MMHELP       ; if it's not either one of the three. There's an error.
-00003128  4CDF 7FFF                197      MOVEM.L (SP)+, A0-A6/D0-D7
-0000312C  6000 FF1A                198      BRA SHELL
-00003130                           199  MM_B:           
-00003130  4287                     200      CLR.L D7
-00003132  6100 0614                201      BSR MM
-00003136  4CDF 7FFF                202      MOVEM.L (SP)+, A0-A6/D0-D7
-0000313A  6000 FF0C                203      BRA SHELL
-0000313E                           204  MM_W:                 
-0000313E  7E01                     205      MOVE.L #1, D7
-00003140  6100 0606                206      BSR MM
-00003144  4CDF 7FFF                207      MOVEM.L (SP)+, A0-A6/D0-D7
-00003148  6000 FEFE                208      BRA SHELL
-0000314C                           209  MM_L:             
-0000314C  7E02                     210      MOVE.L #2, D7
-0000314E  6100 05F8                211      BSR MM
-00003152  4CDF 7FFF                212      MOVEM.L (SP)+, A0-A6/D0-D7
-00003156  6000 FEF0                213      BRA SHELL 
-0000315A                           214  
-0000315A                           215  *Check for SORTW
-0000315A                           216  SW_FUNC:
-0000315A  4DF8 207B                217      LEA SORTWCOMMAND,A6 ; put sortw into A6     
-0000315E  303C 0005                218      MOVE.W #5,D0
-00003162  6100 03E4                219      BSR CHECK_MATCH
-00003166  4A40                     220      TST.W D0            
-00003168  6600 007E                221      BNE BMOV_FUNC
-0000316C                           222      
-0000316C  508D                     223      ADD.L #8,A5         ; this is the start of address1     
-0000316E  2C4D                     224      MOVE.L A5,A6
-00003170  6100 03C0                225      BSR FIND_END        ; find end
-00003174  6100 0512                226      BSR COMMAND_PARSE         ; get inputs 
-00003178  4A41                     227      TST D1
-0000317A  6600 0060                228      BNE SORTW_ERR       ; incorrect arguemnts 
-0000317E  2C00                     229      MOVE.L D0,D6        ; put address1 in D6
-00003180  528E                     230      ADD.L #1,A6
-00003182  2A4E                     231      MOVE.L A6,A5
-00003184  6100 03AC                232      BSR FIND_END        ; getting second address
-00003188  6100 04FE                233      BSR COMMAND_PARSE         
-0000318C  4A41                     234      TST D1
-0000318E  6600 004C                235      BNE SORTW_ERR       ; wrong arguments
-00003192  4BF8 200C                236      LEA INPUT,A5
-00003196  5C8D                     237      ADD.L #6,A5         ; get the letter. D or A
-00003198  0C15 0041                238      CMP.B #'A',(A5)
-0000319C  6700 002A                239      BEQ SORTA
-000031A0  0C15 0044                240      CMP.B #'D',(A5)
-000031A4  6700 000E                241      BEQ SORTD
-000031A8  6100 02E8                242      BSR SORTWHELP        ; No letter, or incorrect letter. 
-000031AC  4CDF 7FFF                243      MOVEM.L (SP)+, A0-A6/D0-D7
-000031B0  6000 FE96                244      BRA SHELL
-000031B4                           245      
-000031B4                           246  * descending 
-000031B4                           247  SORTD:
-000031B4  2A46                     248      MOVE.L D6,A5
-000031B6  2C40                     249      MOVE.L D0,A6
-000031B8  103C 0001                250      MOVE.B #1,D0            
-000031BC  6100 074E                251      BSR SORTW
-000031C0  4CDF 7FFF                252      MOVEM.L (SP)+, A0-A6/D0-D7
-000031C4  6000 FE82                253      BRA SHELL
-000031C8                           254   *aascending  
-000031C8                           255  SORTA:
-000031C8  2A46                     256      MOVE.L D6,A5
-000031CA  2C40                     257      MOVE.L D0,A6
-000031CC  103C 0000                258      MOVE.B #0,D0
-000031D0  6100 073A                259      BSR SORTW            
-000031D4  4CDF 7FFF                260      MOVEM.L (SP)+, A0-A6/D0-D7
-000031D8  6000 FE6E                261      BRA SHELL
-000031DC                           262      
-000031DC                           263  SORTW_ERR:
-000031DC  6100 02B4                264      BSR SORTWHELP      ;PRINT HELP IF ERROR
-000031E0  4CDF 7FFF                265      MOVEM.L (SP)+, A0-A6/D0-D7
-000031E4  6000 FE62                266      BRA SHELL
-000031E8                           267      
-000031E8                           268      
-000031E8                           269  BMOV_FUNC:
-000031E8  4DF8 208F                270      LEA BMOVCOMMAND,A6  ;bmov into A6
-000031EC  303C 0004                271      MOVE.W #4,D0
-000031F0  6100 0356                272      BSR CHECK_MATCH
-000031F4  4A40                     273      TST.W D0          
-000031F6  6600 0058                274      BNE MS_FUNC         ; Not BMOV? go to MS
-000031FA                           275      
-000031FA                           276      
-000031FA  5A8D                     277      ADD.L #5,A5         ; address1 in A5     
-000031FC  2C4D                     278      MOVE.L A5,A6
-000031FE  6100 0332                279      BSR FIND_END
-00003202  6100 0484                280      BSR COMMAND_PARSE
-00003206  4A41                     281      TST D1
-00003208  6600 003A                282      BNE BMOV_ERR
-0000320C  2A00                     283      MOVE.L D0,D5        ; address1 goes in d5
-0000320E  528E                     284      ADD.L #1,A6
-00003210  2A4E                     285      MOVE.L A6,A5
-00003212  6100 031E                286      BSR FIND_END        ; getting address2
-00003216  6100 0470                287      BSR COMMAND_PARSE         ; 
-0000321A  2800                     288      MOVE.L D0,D4
-0000321C  4A41                     289      TST D1
-0000321E  6600 0024                290      BNE BMOV_ERR
-00003222  528E                     291      ADD.L #1,A6
-00003224  2A4E                     292      MOVE.L A6,A5
-00003226  6100 030A                293      BSR FIND_END        ; getting number of bytes to move
-0000322A  6100 045C                294      BSR COMMAND_PARSE         ; stored in D0
-0000322E  4A41                     295      TST D1
-00003230  6600 0012                296      BNE BMOV_ERR
-00003234  2A45                     297      MOVE.L D5,A5
-00003236  2C44                     298      MOVE.L D4,A6
-00003238  6100 067C                299      BSR BMOV            ; call BMOV with A5=address1, A6=address2, D0=count
-0000323C  4CDF 7FFF                300      MOVEM.L (SP)+, A0-A6/D0-D7
-00003240  6000 FE06                301      BRA SHELL
-00003244                           302      
-00003244                           303  BMOV_ERR:
-00003244  6100 0288                304      BSR BMOVHELP
-00003248  4CDF 7FFF                305      MOVEM.L (SP)+, A0-A6/D0-D7
-0000324C  6000 FDFA                306      BRA SHELL 
-00003250                           307  
-00003250                           308      
-00003250                           309      
-00003250                           310  MS_FUNC:
-00003250  4DF8 2084                311      LEA MSCOMMAND,A6    ; put MS into A6
-00003254  303C 0002                312      MOVE.W #2,D0
-00003258  6100 02EE                313      BSR CHECK_MATCH
-0000325C  4A40                     314      TST.W D0            
-0000325E  6600 0040                315      BNE BF_FUNC         
-00003262                           316      
-00003262  568D                     317      ADD.L #3,A5         ; starting address    
-00003264  2C4D                     318      MOVE.L A5,A6
-00003266  6100 02CA                319      BSR FIND_END
-0000326A  6100 041C                320      BSR COMMAND_PARSE
-0000326E  4A41                     321      TST D1
-00003270  6600 0022                322      BNE MS_ERR
-00003274  2A00                     323      MOVE.L D0,D5        ; address1 goes in D5
-00003276  528E                     324      ADD.L #1,A6         ; getting the data to store
-00003278  2A4E                     325      MOVE.L A6,A5        
-0000327A  4DF8 200C                326      LEA INPUT,A6
-0000327E  DDC6                     327      ADDA.L D6,A6        
-00003280  200E                     328      MOVE.L A6,D0
-00003282  908D                     329      SUB.L  A5,D0        ; getting size of bytes to move for BMOV
-00003284  5280                     330      ADDI.L #1,D0        
-00003286  2C45                     331      MOVE.L D5,A6    
-00003288  6100 062C                332      BSR BMOV            ; Call BMOV func for implementation 
-0000328C  4CDF 7FFF                333      MOVEM.L (SP)+, A0-A6/D0-D7
-00003290  6000 FDB6                334      BRA SHELL
-00003294                           335      
-00003294                           336  MS_ERR:
-00003294  6100 01E8                337      BSR MSHELP
-00003298  4CDF 7FFF                338      MOVEM.L (SP)+, A0-A6/D0-D7
-0000329C  6000 FDAA                339      BRA SHELL    
-000032A0                           340      
-000032A0                           341      
-000032A0                           342  BF_FUNC:
-000032A0  4DF8 208C                343      LEA BFCOMMAND,A6        ; put BF into A6
-000032A4  303C 0002                344      MOVE.W #2,D0
-000032A8  6100 029E                345      BSR CHECK_MATCH
-000032AC  4A40                     346      TST.W D0
-000032AE  6000 0058                347      BRA BSCH_FUNC
-000032B2                           348      
-000032B2                           349      *implement bf
-000032B2  568D                     350      ADD.L #3,A5         ; getting address1   
-000032B4  2C4D                     351      MOVE.L A5,A6
-000032B6  6100 027A                352      BSR FIND_END
-000032BA  6100 03CC                353      BSR COMMAND_PARSE
-000032BE  4A41                     354      TST D1
-000032C0  6600 003A                355      BNE BF_ERR
-000032C4  2A00                     356      MOVE.L D0,D5        ; D5 has address1
-000032C6  528E                     357      ADD.L #1,A6
-000032C8  2A4E                     358      MOVE.L A6,A5
-000032CA  6100 0266                359      BSR FIND_END        ; getting address2
-000032CE  6100 03B8                360      BSR COMMAND_PARSE         
-000032D2  2800                     361      MOVE.L D0,D4        ; D4 has address2
-000032D4  4A41                     362      TST D1
-000032D6  6600 0024                363      BNE BF_ERR
-000032DA  528E                     364      ADD.L #1,A6
-000032DC  2A4E                     365      MOVE.L A6,A5        
-000032DE  6100 0252                366      BSR FIND_END        ; getting data to fill blocks with
-000032E2  6100 03A4                367      BSR COMMAND_PARSE        
-000032E6  4A41                     368      TST D1
-000032E8  6600 0012                369      BNE BF_ERR
-000032EC  2A45                     370      MOVE.L D5,A5        ; address1
-000032EE  2C44                     371      MOVE.L D4,A6        ; address2
-000032F0  6100 05DA                372      BSR BF
-000032F4  4CDF 7FFF                373      MOVEM.L (SP)+, A0-A6/D0-D7
-000032F8  6000 FD4E                374      BRA SHELL
-000032FC                           375      
-000032FC                           376  BF_ERR:
-000032FC  6100 01BC                377      BSR BFHELP
-00003300  4CDF 7FFF                378      MOVEM.L (SP)+, A0-A6/D0-D7
-00003304  6000 FD42                379      BRA SHELL   
-00003308                           380  
-00003308                           381  BSCH_FUNC:
-00003308  4DF8 2094                382      LEA BSCHCOMMAND,A6  ; PUT bsch IN a6
-0000330C  303C 0004                383      MOVE.W #4,D0
-00003310  6100 0236                384      BSR CHECK_MATCH
-00003314  4A40                     385      TST.W D0            
-00003316  6600 0052                386      BNE GO_FUNC
-0000331A                           387      
-0000331A                           388      
-0000331A  5A8D                     389      ADD.L #5,A5         ;Start address    
-0000331C  2C4D                     390      MOVE.L A5,A6
-0000331E  6100 0212                391      BSR FIND_END
-00003322  6100 0364                392      BSR COMMAND_PARSE
-00003326  4A41                     393      TST D1
-00003328  6600 0034                394      BNE BSCH_ERR
-0000332C  2040                     395      MOVE.L D0,A0        
-0000332E  528E                     396      ADD.L #1,A6
-00003330  2A4E                     397      MOVE.L A6,A5
-00003332  6100 01FE                398      BSR FIND_END
-00003336  6100 0350                399      BSR COMMAND_PARSE
-0000333A  4A41                     400      TST D1
-0000333C  6600 0020                401      BNE BSCH_ERR
-00003340  2240                     402      MOVE.L D0,A1        ;second address
-00003342  528E                     403      ADD.L #1,A6         ; getting stirng to find
-00003344  2A4E                     404      MOVE.L A6,A5        
-00003346  4DF8 200C                405      LEA INPUT,A6
-0000334A  DDC6                     406      ADDA.L D6,A6        
-0000334C  200E                     407      MOVE.L A6,D0
-0000334E  908D                     408      SUB.L  A5,D0        
-00003350  2600                     409      MOVE.L D0,D3        
-00003352  6100 087E                410      BSR BSCH
-00003356  4CDF 7FFF                411      MOVEM.L (SP)+, A0-A6/D0-D7
-0000335A  6000 FCEC                412      BRA SHELL
-0000335E                           413  BSCH_ERR:
-0000335E  6100 0182                414      BSR BSCHHELP
-00003362  4CDF 7FFF                415      MOVEM.L (SP)+, A0-A6/D0-D7
-00003366  6000 FCE0                416      BRA SHELL
-0000336A                           417      
-0000336A                           418  GO_FUNC:
-0000336A  4DF8 2099                419      LEA GOCOMMAND,A6    ; put go in A6
-0000336E  303C 0002                420      MOVE.W #2,D0
-00003372  6100 01D4                421      BSR CHECK_MATCH          
-00003376  4A40                     422      TST.W D0
-00003378  6600 002C                423      BNE DF_FUNC
-0000337C                           424      
-0000337C  568D                     425      ADD.L #3,A5         ; get start address     
-0000337E  2C4D                     426      MOVE.L A5,A6
-00003380  6100 01B0                427      BSR FIND_END
-00003384  6100 0302                428      BSR COMMAND_PARSE
-00003388  4A41                     429      TST D1
-0000338A  6600 000E                430      BNE GO_ERR
-0000338E  21C0 2594                431      MOVE.L D0,REG_STORE   ; put starting address of program in memory
-00003392  4CDF 7FFF                432      MOVEM.L (SP)+, A0-A6/D0-D7
-00003396  6000 0544                433      BRA GO
-0000339A                           434      
-0000339A                           435  GO_ERR:
-0000339A  4CDF 7FFF                436      MOVEM.L (SP)+, A0-A6/D0-D7
-0000339E  6100 0156                437      BSR GOHELP
-000033A2  6000 FCA4                438      BRA SHELL
-000033A6                           439      
-000033A6                           440  DF_FUNC:
-000033A6  4DF8 209C                441      LEA DFCOMMAND,A6    ; putting DF ni A6
-000033AA  303C 0002                442      MOVE.W #2,D0
-000033AE  6100 0198                443      BSR CHECK_MATCH
-000033B2  4A40                     444      TST.W D0            
-000033B4  6600 001A                445      BNE FONT_FUNC
-000033B8                           446      
-000033B8                           447  PC_VAL:
-000033B8  21FC 000033B8 258E       448      MOVE.L #PC_VAL,PC_STORE ; put PC in storage location to print out later
-000033C0  40F8 2594                449      MOVE.W SR,REG_STORE       ; get SR data 
-000033C4  4CDF 7FFF                450      MOVEM.L (SP)+, A0-A6/D0-D7  
-000033C8  6100 0574                451      BSR DF
-000033CC  6000 FC7A                452      BRA SHELL
-000033D0                           453      
-000033D0                           454  FONT_FUNC:
-000033D0  4DF8 20A8                455      LEA FONT,A6
-000033D4  303C 0004                456      MOVE.W #4,D0
-000033D8  6100 016E                457      BSR CHECK_MATCH          
-000033DC  4A40                     458      TST.W D0
-000033DE  6600 002C                459      BNE ECHO_FUNC
-000033E2                           460      
-000033E2  5A8D                     461      ADD.L #5,A5         ; address into A5     
-000033E4  2C4D                     462      MOVE.L A5,A6
-000033E6  6100 014A                463      BSR FIND_END
-000033EA  6100 029C                464      BSR COMMAND_PARSE
-000033EE  4A41                     465      TST D1
-000033F0  6600 000E                466      BNE FONT_ERR
-000033F4  2200                     467      MOVE.L D0,D1    ;value to change font color stored in D1
-000033F6  103C 0015                468      MOVE.B #21,D0
-000033FA  4E4F                     469      TRAP #15        ;change font color
-000033FC  6000 FC4A                470      BRA SHELL
-00003400                           471      
-00003400                           472  FONT_ERR:
-00003400  4CDF 7FFF                473      MOVEM.L (SP)+, A0-A6/D0-D7
-00003404  6100 00F0                474      BSR GOHELP
-00003408  6000 FC3E                475      BRA SHELL
-0000340C                           476      
-0000340C                           477      
-0000340C                           478  ECHO_FUNC:
-0000340C  4DF8 20AD                479      LEA ECHOCOMMAND,A6
-00003410  303C 0004                480      MOVE.W #4,D0
-00003414  6100 0132                481      BSR CHECK_MATCH          
-00003418  4A40                     482      TST.W D0
-0000341A  6600 002A                483      BNE EXIT_FUNC
-0000341E                           484      
-0000341E  5A8D                     485      ADD.L #5,A5         ; address into A5     
-00003420  2C4D                     486      MOVE.L A5,A6
-00003422  6100 010E                487      BSR FIND_END
-00003426  6100 0260                488      BSR COMMAND_PARSE
-0000342A  324D                     489      MOVE.W A5,A1
-0000342C  9DCD                     490      SUB.L A5,A6
-0000342E  320E                     491      MOVE.W A6,D1
-00003430  303C 000D                492      MOVE.W #13,D0
-00003434  4E4F                     493      TRAP #15        ; print out text
-00003436  6000 FC10                494      BRA SHELL
-0000343A                           495      
-0000343A                           496  ECHO_ERR:
-0000343A  4CDF 7FFF                497      MOVEM.L (SP)+, A0-A6/D0-D7
-0000343E  6100 00B6                498      BSR GOHELP
-00003442  6000 FC04                499      BRA SHELL
-00003446                           500      
-00003446                           501      
-00003446                           502  
-00003446                           503  EXIT_FUNC:
-00003446  4DF8 209F                504      LEA EXITCOMMAND,A6
-0000344A  303C 0004                505      MOVE.W #4,D0
-0000344E  6100 00F8                506      BSR CHECK_MATCH
-00003452  4A40                     507      TST.W D0           
-00003454  6600 0008                508      BNE ERR 
-00003458                           509      
-00003458  303C 0009                510      MOVE.W #9,D0    ; 9 terminates the program
-0000345C  4E4F                     511      TRAP #15   
-0000345E                           512      
-0000345E                           513  ERR:
-0000345E  6100 00AA                514      BSR ALL_HELP_PROMPTS
-00003462  4CDF 7FFF                515      MOVEM.L (SP)+, A0-A6/D0-D7
-00003466  6000 FBE0                516      BRA SHELL
-0000346A                           517  
-0000346A                           518  MMHELP:
-0000346A  48E7 8040                519      MOVEM.L D0/A1, -(SP)
-0000346E  43F8 21B5                520      LEA MMHELPPROMPT, A1
-00003472  103C 000D                521      MOVE.B #13,D0  
-00003476  4E4F                     522      TRAP #15
-00003478  4CDF 0201                523      MOVEM.L (SP)+, D0/A1
-0000347C  4E75                     524      RTS
-0000347E                           525      
-0000347E                           526  MSHELP:
-0000347E  48E7 8040                527      MOVEM.L D0/A1, -(SP)
-00003482  43F8 221D                528      LEA MSHELPPROMPT, A1
-00003486  103C 000D                529      MOVE.B #13,D0
-0000348A  4E4F                     530      TRAP #15
-0000348C  4CDF 0201                531      MOVEM.L (SP)+, D0/A1
-00003490  4E75                     532      RTS
-00003492                           533  
-00003492                           534  SORTWHELP:
-00003492  48E7 8040                535      MOVEM.L D0/A1, -(SP)
-00003496  43F8 212A                536      LEA SORTWHELPPROMPT, A1
-0000349A  103C 000D                537      MOVE.B #13,D0
-0000349E  4E4F                     538      TRAP #15
-000034A0  4CDF 0201                539      MOVEM.L (SP)+, D0/A1
-000034A4  4E75                     540      RTS
-000034A6                           541      
-000034A6                           542  MDSPHELP:
-000034A6  48E7 8040                543      MOVEM.L D0/A1, -(SP)
-000034AA  43F8 20CB                544      LEA MDSPHELPPROMPT, A1
-000034AE  103C 000D                545      MOVE.B #13,D0
-000034B2  4E4F                     546      TRAP #15
-000034B4  4CDF 0201                547      MOVEM.L (SP)+, D0/A1
-000034B8  4E75                     548      RTS
-000034BA                           549      
-000034BA                           550  BFHELP:
-000034BA  48E7 8040                551      MOVEM.L D0/A1, -(SP)
-000034BE  43F8 22EB                552      LEA BFHELPPROMPT, A1
-000034C2  103C 000D                553      MOVE.B #13,D0
-000034C6  4E4F                     554      TRAP #15
-000034C8  4CDF 0201                555      MOVEM.L (SP)+, D0/A1
-000034CC  4E75                     556      RTS
-000034CE                           557  
-000034CE                           558  BMOVHELP:
-000034CE  48E7 8040                559      MOVEM.L D0/A1, -(SP)
-000034D2  43F8 228F                560      LEA BMOVHELPPROMPT, A1
-000034D6  103C 000D                561      MOVE.B #13,D0
-000034DA  4E4F                     562      TRAP #15
-000034DC  4CDF 0201                563      MOVEM.L (SP)+, D0/A1
-000034E0  4E75                     564      RTS
-000034E2                           565      
-000034E2                           566  BSCHHELP:
-000034E2  48E7 8040                567      MOVEM.L D0/A1, -(SP)
-000034E6  43F8 235F                568      LEA BSCHHELPPROMPT, A1
-000034EA  103C 000D                569      MOVE.B #13,D0
-000034EE  4E4F                     570      TRAP #15
-000034F0  4CDF 0201                571      MOVEM.L (SP)+, D0/A1
-000034F4  4E75                     572      RTS
-000034F6                           573  
-000034F6                           574  GOHELP:
-000034F6  48E7 8040                575      MOVEM.L D0/A1, -(SP)
-000034FA  43F8 23CD                576      LEA GOHELPPROMPT, A1
-000034FE  103C 000D                577      MOVE.B #13,D0
-00003502  4E4F                     578      TRAP #15
-00003504  4CDF 0201                579      MOVEM.L (SP)+, D0/A1
-00003508  4E75                     580      RTS
-0000350A                           581  
-0000350A                           582  
-0000350A                           583  ALL_HELP_PROMPTS:
-0000350A  6100 FF5E                584      BSR MMHELP
-0000350E  6182                     585      BSR SORTWHELP
-00003510  6194                     586      BSR MDSPHELP
-00003512  6100 FF6A                587      BSR MSHELP
-00003516  61A2                     588      BSR BFHELP
-00003518  61B4                     589      BSR BMOVHELP
-0000351A  61C6                     590      BSR BSCHHELP
-0000351C  61D8                     591      BSR GOHELP
-0000351E  48E7 8040                592      MOVEM.L D0/A1, -(SP)
-00003522  43F8 2407                593      LEA DFHELPPROMPT, A1
-00003526  103C 000D                594      MOVE.B #13,D0
-0000352A  4E4F                     595      TRAP #15
-0000352C  4CDF 0201                596      MOVEM.L (SP)+, D0/A1
-00003530  4E75                     597      RTS
-00003532                           598      
-00003532                           599  *Finds end of string. Either char is a 0 or it's empty COLON
-00003532                           600  FIND_END:    
-00003532  0C16 0000                601      CMP.B #0,(A6)   ; check if we are at end
-00003536  6700 000E                602      BEQ END_FOUND
-0000353A  0C16 0020                603      CMP.B #' ',(A6) ; check if we are at end
-0000353E  6700 0006                604      BEQ END_FOUND
-00003542  528E                     605      ADDA.L #1,A6    ; keep searching 
-00003544  60EC                     606      BRA FIND_END
-00003546                           607      
-00003546                           608  END_FOUND:
-00003546  4E75                     609      RTS
-00003548                           610      
-00003548                           611   *compare strings
-00003548                           612  CHECK_MATCH:     
-00003548  48E7 0006                613      MOVEM.L A5/A6, -(SP) ;strings are in A5 and A6
-0000354C  4A40                     614      TST D0          ; length of input string is in D0.
-0000354E  6700 001A                615      BEQ NO_MATCH     ; if string length is 0 they're not equal
-00003552  5380                     616      SUB.L #1,D0
-00003554                           617  FOR_C_IN_STRING:
-00003554  BD0D                     618      CMP.B (A5)+,(A6)+   ; compare characters byte by byte
-00003556  6600 0012                619      BNE NO_MATCH        ; byte not equal? string is not equal
-0000355A  4A40                     620      TST.W D0            ; compared all the characters in the string?
-0000355C  57C8 FFF6                621      DBEQ.W D0,FOR_C_IN_STRING    ;  DO AT MOST D0 COMPARISONS
-00003560  6000 0002                622      BRA MATCH            ; finshed comparing and strings are equal.
-00003564                           623      
-00003564                           624  MATCH:
-00003564  4CDF 6000                625      MOVEM.L (SP)+, A5/A6  ;D0 will = 0, signifying a match
-00003568  4E75                     626      RTS
-0000356A                           627  NO_MATCH:
-0000356A  7001                     628      MOVE.L #1,D0        ; return 1 to signify no match
-0000356C  4CDF 6000                629      MOVEM.L (SP)+, A5/A6
-00003570  4E75                     630      RTS
-00003572                           631      
-00003572                           632  
-00003572                           633  TRAPING_HOES:
-00003572  5C8F                     634      ADD.L #6,SP        
-00003574  4CDF FFFF                635      MOVEM.L (A7)+,A0-A7/D0-D7
-00003578  4E75                     636      RTS
-0000357A                           637      
-0000357A                           638      
-0000357A                           639  ADDRESS_ERRORV:
-0000357A  48E7 E040                640      MOVEM.L A1/D0-D2, -(SP)
-0000357E  700E                     641      MOVE.L #14,D0
-00003580  43F8 24A0                642      LEA ADDRESS_ER,A1  ;print ADDRESS:
-00003584  4E4F                     643      TRAP #15
-00003586                           644      
-00003586  143C 0010                645      MOVE.B #16,D2
-0000358A  700D                     646      MOVE.L #13,D0
-0000358C  43F8 243E                647      LEA NL,A1
-00003590  4E4F                     648      TRAP #15
-00003592  21EF 001A 258E           649      MOVE.L (26,A7),PC_STORE
-00003598  31EF 0018 2594           650      MOVE.W (24,A7),REG_STORE   ; get SR
-0000359E  4CDF 0207                651      MOVEM.L (SP)+, A1/D0-D2
-000035A2  6100 039A                652      BSR DF  ; Use Display registers to print out registers and content 
-000035A6  DFFC 0000000E            653      ADD.L #14,SP     
-000035AC  4EF8 3048                654      JMP SHELL
-000035B0                           655  
-000035B0                           656  ILLEGAL_INSTRV:
-000035B0  48E7 8040                657      MOVEM.L A1/D0, -(SP)
-000035B4  700D                     658      MOVE.L #13,D0
-000035B6  43F8 24B4                659      LEA ILLEGAL_ER,A1   ; print iilegal instruction erorr
-000035BA  4E4F                     660      TRAP #15
-000035BC  4CDF 0201                661      MOVEM.L (SP)+, A1/D0
-000035C0  31D7 2594                662      MOVE.W (A7),REG_STORE   ; put sr in regstore
-000035C4  21EF 0002 258E           663      MOVE.L (2,A7),PC_STORE
-000035CA  6100 0372                664      BSR DF          
-000035CE  5C8F                     665      ADD.L #6,SP     
-000035D0  4EF8 3048                666      JMP SHELL
-000035D4                           667      
-000035D4                           668  PRIVALEGEV:
-000035D4  48E7 8040                669      MOVEM.L A1/D0, -(SP)
-000035D8  700D                     670      MOVE.L #13,D0
-000035DA  43F8 24D3                671      LEA PRIVALAGE_ER,A1
-000035DE  4E4F                     672      TRAP #15
-000035E0  4CDF 0201                673      MOVEM.L (SP)+, A1/D0
-000035E4  31D7 2594                674      MOVE.W (A7),REG_STORE   
-000035E8  21EF 0002 258E           675      MOVE.L (2,A7),PC_STORE
-000035EE  6100 034E                676      BSR DF          
-000035F2  5C8F                     677      ADD.L #6,SP     
-000035F4  4EF8 3048                678      JMP SHELL
-000035F8                           679  
-000035F8                           680  DIVIDE_ZEROV:
-000035F8  48E7 8040                681      MOVEM.L A1/D0, -(SP)
-000035FC  700D                     682      MOVE.L #13,D0
-000035FE  43F8 24F1                683      LEA DIVIDE_Z_ER,A1
-00003602  4E4F                     684      TRAP #15
-00003604  4CDF 0201                685      MOVEM.L (SP)+, A1/D0
-00003608  31D7 2594                686      MOVE.W (A7),REG_STORE   
-0000360C  21EF 0002 258E           687      MOVE.L (2,A7),PC_STORE
-00003612  6100 032A                688      BSR DF          
-00003616  5C8F                     689      ADD.L #6,SP     
-00003618  4EF8 3048                690      JMP SHELL
-0000361C                           691      
-0000361C                           692  CHECK_INSTRV:
-0000361C  48E7 8040                693      MOVEM.L A1/D0, -(SP)
-00003620  700D                     694      MOVE.L #13,D0
-00003622  43F8 2503                695      LEA CHECK_ER,A1
-00003626  4E4F                     696      TRAP #15
-00003628  4CDF 0201                697      MOVEM.L (SP)+, A1/D0
-0000362C  31D7 2594                698      MOVE.W (A7),REG_STORE   
-00003630  21EF 0002 258E           699      MOVE.L (2,A7),PC_STORE
-00003636  6100 0306                700      BSR DF          
-0000363A  5C8F                     701      ADD.L #6,SP     
-0000363C  4EF8 3048                702      JMP SHELL
-00003640                           703    
-00003640                           704  LINEAV:
-00003640  48E7 8040                705      MOVEM.L A1/D0, -(SP)
-00003644  700D                     706      MOVE.L #13,D0
-00003646  43F8 251B                707      LEA LINEA_ER,A1
-0000364A  4E4F                     708      TRAP #15
-0000364C  4CDF 0201                709      MOVEM.L (SP)+, A1/D0
-00003650  31D7 2594                710      MOVE.W (A7),REG_STORE   
-00003654  21EF 0002 258E           711      MOVE.L (2,A7),PC_STORE
-0000365A  6100 02E2                712      BSR DF          
-0000365E  5C8F                     713      ADD.L #6,SP     
-00003660  4EF8 3048                714      JMP SHELL
-00003664                           715      
-00003664                           716  LINEFV:
-00003664  48E7 8040                717      MOVEM.L A1/D0, -(SP)
-00003668  700D                     718      MOVE.L #13,D0
-0000366A  43F8 2535                719      LEA LINEF_ER,A1
-0000366E  4E4F                     720      TRAP #15
-00003670  4CDF 0201                721      MOVEM.L (SP)+, A1/D0
-00003674  31D7 2594                722      MOVE.W (A7),REG_STORE   
-00003678  21EF 0002 258E           723      MOVE.L (2,A7),PC_STORE
-0000367E  6100 02BE                724      BSR DF          
-00003682  5C8F                     725      ADD.L #6,SP     
-00003684  4EF8 3048                726      JMP SHELL
-00003688                           727  
-00003688                           728      
-00003688                           729      
-00003688                           730  * Parses arguments for a valid command.
-00003688                           731  COMMAND_PARSE:            
-00003688  48E7 3F46                732      MOVEM.L A1/A5/A6/D2-D7, -(SP)  
-0000368C  4280                     733      CLR.L D0
-0000368E  4281                     734      CLR.L D1
-00003690  7400                     735      MOVE.L #0, D2   
-00003692  0C1D 0024                736      CMP.B #$24,(A5)+ ;checking for $
-00003696  6600 0056                737      BNE PARSE_ERR
-0000369A  224E                     738      MOVE.L A6,A1
-0000369C  93CD                     739      SUB.L A5,A1
-0000369E  B3FC 00000008            740      CMP.L #8,A1
-000036A4  6E00 0048                741      BGT PARSE_ERR
-000036A8                           742      
-000036A8                           743  FOR_PARSE:
-000036A8  BCCD                     744      CMP A5,A6       ; check if eat ennd of command
-000036AA  6F00 0044                745      BLE PARSE_DONE
-000036AE  4283                     746      CLR.L D3        ; use D3 to check
-000036B0  1626                     747      MOVE.B -(A6),D3
-000036B2  B63C 0046                748      CMP.B #'F',D3   ; bigger than 16 Hex?
-000036B6  6E00 0036                749      BGT PARSE_ERR
-000036BA  B63C 0030                750      CMP.B #'0',D3   ; negative
-000036BE  6D00 002E                751      BLT PARSE_ERR
-000036C2  B63C 0039                752      CMP.B #'9',D3
-000036C6  6F00 000E                753      BLE NUM_CHECK   ; WITHIN 0-9 OR A-F?
-000036CA  B63C 0041                754      CMP.B #'A',D3
-000036CE  6C00 0012                755      BGE HEX_CHECK
-000036D2  6000 001A                756      BRA PARSE_ERR
-000036D6                           757      
-000036D6                           758  NUM_CHECK:
-000036D6  0403 0030                759      SUBI.B #$30,D3  
-000036DA  E5AB                     760      LSL.L D2,D3
-000036DC  8083                     761      OR.L D3,D0
-000036DE  5802                     762      ADD.B #4,D2    
-000036E0  60C6                     763      BRA FOR_PARSE
-000036E2                           764      
-000036E2                           765  HEX_CHECK:
-000036E2  0403 0037                766      SUBI.B #55,D3 
-000036E6  E5AB                     767      LSL.L D2,D3
-000036E8  8083                     768      OR.L D3,D0
-000036EA  5802                     769      ADD.B #4,D2     
-000036EC  60BA                     770      BRA FOR_PARSE
-000036EE                           771    
-000036EE                           772  PARSE_ERR:
-000036EE  5201                     773      ADDI.B #1,D1    
-000036F0                           774  PARSE_DONE:
-000036F0  4CDF 62FC                775      MOVEM.L (SP)+, A1/A5/A6/D2-D7
-000036F4  4E75                     776      RTS
-000036F6                           777      
-000036F6                           778  MDSP:                    
-000036F6  48E7 FFFE                779      MOVEM.L A0-A6/D0-D7,-(SP)
-000036FA  BDFC 00000000            780      CMP.L #0, A6
-00003700  6600 0008                781      BNE MD
-00003704  DDFC 00000010            782      ADD.L #16, A6   ; if A6=0 add 16 to get the end address.
-0000370A                           783  MD:
-0000370A  143C 0010                784      MOVE.B #16,D2   ; base of number to display for trap function
-0000370E  43F8 2581                785      LEA ADDRESS,A1  ; ADDRESS prompt to print
-00003712  103C 000E                786      MOVE.B #14,D0
-00003716  4E4F                     787      TRAP #15        ;Display the NULL terminated string pointed to by (A1).
-00003718  220D                     788      MOVE.L A5,D1
-0000371A  103C 000F                789      MOVE.B #15,D0   ;Display the unsigned number in D1.L converted to number base (2 through 36) contained in D2.B. 
-0000371E  4E4F                     790      TRAP #15        
-00003720  43F8 258A                791      LEA COLON,A1    ; put a COLON
-00003724  103C 000E                792      MOVE.B #14,D0
-00003728  4E4F                     793      TRAP #15        ; 
-0000372A  4281                     794      CLR.L D1
-0000372C  121D                     795      MOVE.B (A5)+,D1 ; move contents pointed to by A5 to D1 to display 
-0000372E  103C 000F                796      MOVE.B #15,D0
-00003732  4E4F                     797      TRAP #15        ; display D1 contents (data)
-00003734  43F8 243E                798      LEA NL,A1
-00003738  103C 000D                799      MOVE.B #13,D0
-0000373C  4E4F                     800      TRAP #15        ; print empty space for new input
-0000373E  BCCD                     801      CMP A5,A6       ; are we at address2?
-00003740  6CC8                     802      BGE MD          ; keep going if we're not
-00003742  4CDF 7FFF                803      MOVEM.L (SP)+,A0-A6/D0-D7
-00003746  4E75                     804      RTS
-00003748                           805  
-00003748                           806      
-00003748                           807  MM:        
-00003748  48E7 FFFE                808      MOVEM.L A0-A6/D0-D7,-(SP)
-0000374C  BE7C 0001                809      CMP #1, D7
-00003750  6700 007A                810      BEQ MM_WORD
-00003754  BE7C 0002                811      CMP #2, D7
-00003758  6700 00E2                812      BEQ MM_LONG
-0000375C                           813      
-0000375C                           814  MM_BYTE:        
-0000375C  5388                     815      SUBA.L #1, A0    
-0000375E                           816  BLOOP:    
-0000375E  143C 0010                817      MOVE.B #16,D2   
-00003762  5248                     818      ADDA #1, A0     ; increment to the next Bbyte 
-00003764  43F8 2581                819      LEA ADDRESS,A1  
-00003768  103C 000E                820      MOVE.B #14,D0   ; address
-0000376C  4E4F                     821      TRAP #15
-0000376E  2208                     822      MOVE.L A0,D1
-00003770  103C 000F                823      MOVE.B #15,D0   
-00003774  4E4F                     824      TRAP #15
-00003776  43F8 258A                825      LEA COLON,A1
-0000377A  103C 000E                826      MOVE.B #14,D0
-0000377E  4E4F                     827      TRAP #15
-00003780  4281                     828      CLR.L D1
-00003782  1210                     829      MOVE.B (A0),D1  ; moving data to D1
-00003784  103C 000F                830      MOVE.B #15,D0   ; printing data
-00003788  4E4F                     831      TRAP #15        
-0000378A  43F8 258A                832      LEA COLON,A1
-0000378E  103C 000E                833      MOVE.B #14,D0   
-00003792  4E4F                     834      TRAP #15
-00003794  43F8 200C                835      LEA INPUT,A1
-00003798  103C 0002                836      MOVE.B #2,D0    ; waiting for user input
-0000379C  4E4F                     837      TRAP #15
-0000379E  B27C 0000                838      CMP.W #0,D1     ; if enter was hit, and not input. Restart
-000037A2  67BA                     839      BEQ BLOOP
-000037A4  0C11 002E                840      CMP.B #$2E,(A1)   ; if we get a period, finish.
-000037A8  6700 0106                841      BEQ MM_EXIT
-000037AC  B27C 0003                842      CMP.W #3,D1          
-000037B0  6600 00FA                843      BNE MMERR       ; print an error if we get incorret number of charcters
-000037B4  4BF8 200C                844      LEA INPUT,A5
-000037B8  4DF8 200C                845      LEA INPUT,A6
-000037BC  DCC1                     846      ADDA D1,A6
-000037BE  6100 FEC8                847      BSR COMMAND_PARSE
-000037C2  4A41                     848      TST D1
-000037C4  6600 00E6                849      BNE MMERR       
-000037C8  1080                     850      MOVE.B D0,(A0)  
-000037CA  6092                     851      BRA BLOOP
-000037CC                           852      
-000037CC                           853  MM_WORD:           
-000037CC  5588                     854      SUBA.L #2, A0    
-000037CE                           855  MMWLOOP:    
-000037CE  143C 0010                856      MOVE.B #16,D2   ; setting base number to print from
-000037D2  5448                     857      ADDA #2, A0     ; increment to the next wORD
-000037D4  43F8 2581                858      LEA ADDRESS,A1  
-000037D8  103C 000E                859      MOVE.B #14,D0   
-000037DC  4E4F                     860      TRAP #15
-000037DE  2208                     861      MOVE.L A0,D1
-000037E0  103C 000F                862      MOVE.B #15,D0   
-000037E4  4E4F                     863      TRAP #15        ; print address
-000037E6  43F8 258A                864      LEA COLON,A1    
-000037EA  103C 000E                865      MOVE.B #14,D0
-000037EE  4E4F                     866      TRAP #15
-000037F0  4281                     867      CLR.L D1
-000037F2  3210                     868      MOVE.W (A0),D1  ; moving data pointed to by A1 to D1 for printing
-000037F4  103C 000F                869      MOVE.B #15,D0
-000037F8  4E4F                     870      TRAP #15        ; print current data at this address
-000037FA  43F8 258A                871      LEA COLON,A1
-000037FE  103C 000E                872      MOVE.B #14,D0   
-00003802  4E4F                     873      TRAP #15
-00003804  43F8 200C                874      LEA INPUT,A1
-00003808  103C 0002                875      MOVE.B #2,D0    ; wait for input from user
-0000380C  4E4F                     876      TRAP #15
-0000380E  B27C 0000                877      CMP.W #0,D1     ; if enter was hit, and not input. Restart
-00003812  67BA                     878      BEQ MMWLOOP
-00003814  0C11 002E                879      CMP.B #$2E,(A1)   ; if we get a period, finish
-00003818  6700 0096                880      BEQ MM_EXIT
-0000381C  B27C 0005                881      CMP.W #5,D1       ; 4 character comparison   
-00003820  6600 008A                882      BNE MMERR
-00003824  4BF8 200C                883      LEA INPUT,A5
-00003828  4DF8 200C                884      LEA INPUT,A6
-0000382C  DCC1                     885      ADDA D1,A6
-0000382E  6100 FE58                886      BSR COMMAND_PARSE
-00003832  4A41                     887      TST D1
-00003834  6600 0076                888      BNE MMERR      
-00003838  3080                     889      MOVE.W D0,(A0)  ; Move data
-0000383A  6092                     890      BRA MMWLOOP
-0000383C                           891  
-0000383C                           892  MM_LONG:             ;BYTE SIZE MM
-0000383C  5988                     893      SUBA.L #4, A0     ; SUBTRACT JUST THE FIRST TIME
-0000383E                           894  MMLLOOP:    
-0000383E  143C 0010                895      MOVE.B #16,D2   
-00003842  5848                     896      ADDA #4, A0     
-00003844  43F8 2581                897      LEA ADDRESS,A1  
-00003848  103C 000E                898      MOVE.B #14,D0   
-0000384C  4E4F                     899      TRAP #15
-0000384E  2208                     900      MOVE.L A0,D1
-00003850  103C 000F                901      MOVE.B #15,D0   
-00003854  4E4F                     902      TRAP #15
-00003856  43F8 258A                903      LEA COLON,A1    
-0000385A  103C 000E                904      MOVE.B #14,D0
-0000385E  4E4F                     905      TRAP #15
-00003860  4281                     906      CLR.L D1
-00003862  2210                     907      MOVE.L (A0),D1  
-00003864  103C 000F                908      MOVE.B #15,D0
-00003868  4E4F                     909      TRAP #15        
-0000386A  43F8 258A                910      LEA COLON,A1
-0000386E  103C 000E                911      MOVE.B #14,D0   
-00003872  4E4F                     912      TRAP #15
-00003874  43F8 200C                913      LEA INPUT,A1
-00003878  103C 0002                914      MOVE.B #2,D0    
-0000387C  4E4F                     915      TRAP #15
-0000387E  B27C 0000                916      CMP.W #0,D1     
-00003882  67BA                     917      BEQ MMLLOOP
-00003884  0C11 002E                918      CMP.B #$2E,(A1)   
-00003888  6700 0026                919      BEQ MM_EXIT
-0000388C  B27C 0009                920      CMP.W #9,D1         
-00003890  6600 001A                921      BNE MMERR
-00003894  4BF8 200C                922      LEA INPUT,A5
-00003898  4DF8 200C                923      LEA INPUT,A6
-0000389C  DCC1                     924      ADDA D1,A6
-0000389E  6100 FDE8                925      BSR COMMAND_PARSE
-000038A2  4A41                     926      TST D1
-000038A4  6600 0006                927      BNE MMERR       
-000038A8  2080                     928      MOVE.L D0,(A0)  
-000038AA  6092                     929      BRA MMLLOOP
-000038AC                           930  
-000038AC                           931  MMERR:
-000038AC  6100 FBBC                932     BSR MMHELP
-000038B0                           933  MM_EXIT:
-000038B0  4CDF 7FFF                934     MOVEM.L (SP)+, A0-A6/D0-D7
-000038B4  4E75                     935     RTS
-000038B6                           936  
-000038B6                           937  
-000038B6                           938  BMOV:                      
-000038B6  48E7 8006                939     MOVEM.L A5/A6/D0,-(SP)
-000038BA  5380                     940     SUBI.L #1,D0        ; D0 has count of data to move
-000038BC                           941  BMOV_LOOP:  
-000038BC  1CDD                     942     MOVE.B (A5)+,(A6)+  ; move contents from location in A5 to A6
-000038BE  57C8 FFFC                943     DBEQ D0,BMOV_LOOP
-000038C2  6000 0002                944     BRA BMOV_EXIT
-000038C6                           945           
-000038C6                           946  BMOV_EXIT:         
-000038C6  4CDF 6001                947     MOVEM.L (SP)+,A5/A6/D0
-000038CA  4E75                     948     RTS   
-000038CC                           949          
-000038CC                           950  
-000038CC                           951      
-000038CC                           952  BF:                      
-000038CC  48E7 0004                953     MOVEM.L A5,-(SP)
-000038D0                           954  BF_LOOP:  
-000038D0  3AC0                     955     MOVE.W D0,(A5)+  ; fill memory location with data in D0
-000038D2  BCCD                     956     CMP A5,A6        ; keep going until we hit address2
-000038D4  6EFA                     957     BGT BF_LOOP
-000038D6  4CDF 2000                958     MOVEM.L (SP)+,A5
-000038DA  4E75                     959     RTS
-000038DC                           960           
-000038DC                           961  
-000038DC                           962    
-000038DC                           963             
-000038DC                           964  GO:                     
-000038DC  48E7 E040                965     MOVEM.L A1/D0-D2, -(SP) 
-000038E0  43F8 254F                966     LEA GO_ADDRESS,A1       ; print address
-000038E4  103C 000E                967     MOVE.B #14,D0
-000038E8  4E4F                     968     TRAP #15
-000038EA  103C 000F                969     MOVE.B #15,D0
-000038EE  2238 2594                970     MOVE.L REG_STORE,D1
-000038F2  143C 0010                971     MOVE.B #16,D2      ;convert to ascii
-000038F6  4E4F                     972     TRAP #15
-000038F8  43F8 243E                973     LEA NL,A1
-000038FC  103C 000D                974     MOVE.B #13,D0
-00003900  4E4F                     975     TRAP #15
-00003902  4CDF 0207                976     MOVEM.L (SP)+, A1/D0-D2
-00003906  2F38 2594                977     MOVE.L REG_STORE, -(SP) 
-0000390A  4E75                     978     RTS                ; be able to retunrn after
-0000390C                           979            
-0000390C                           980  
-0000390C                           981  *sorting algorithm. DO holds value for ascending or descending         
-0000390C                           982  SORTW:
-0000390C  48E7 4026                983     MOVEM.L A2/A5-A6/D1, -(SP)
-00003910  244D                     984     MOVE.L A5,A2         ; address1
-00003912                           985     
-00003912                           986  ** for i in range(1,n):
-00003912                           987  **      for j in range():
-00003912                           988  SORTW_FOR_I:
-00003912  2A4A                     989     MOVE.L A2,A5
-00003914                           990  SORTW_FOR_J:
-00003914  4A00                     991     TST.B D0             ;check for order first
-00003916  6700 000A                992     BEQ DESC             
-0000391A  BB4D                     993     CMP.W (A5)+,(A5)+    ; start compare of elements
-0000391C  6212                     994     BHI.S SWAP           ; if the value is higher, branch to swap elements       
-0000391E  6000 0006                995     BRA SORTW_NEXT
-00003922                           996  DESC:
-00003922  BB4D                     997     CMP.W (A5)+,(A5)+    ; Compare current and next elements
-00003924  650A                     998     BLO.S SWAP          
-00003926                           999  SORTW_NEXT:
-00003926  558D                    1000     SUBQ.L #2,A5         
-00003928  BDCD                    1001     CMP.L A5,A6
-0000392A  66E8                    1002     BNE SORTW_FOR_J            ; Did we reach end of string? keep going if no
-0000392C  6000 000A               1003     BRA SORTW_EXIT
-00003930                          1004  SWAP:
-00003930  2225                    1005     MOVE.L -(A5),D1      ; get back to start of comaparison and put the two values in D1. eg. D1=11112222
-00003932  4841                    1006     SWAP.W D1            ; swap the word val. D1=22221111
-00003934  2A81                    1007     MOVE.L D1,(A5)       ; move the values back into memory
-00003936  60DA                    1008     BRA SORTW_FOR_I      ; restart for loop after a swap
-00003938                          1009     
-00003938                          1010  SORTW_EXIT:  
-00003938  4CDF 6402               1011     MOVEM.L (SP)+, A2/A5-A6/D1
-0000393C  4E75                    1012     RTS
-0000393E                          1013     
-0000393E                          1014     
-0000393E                          1015  DF: 
-0000393E                          1016                         
-0000393E  48E7 FFFF               1017      MOVEM.L A0-A7/D0-D7,-(A7)
-00003942  204F                    1018      MOVE.L A7,A0
-00003944                          1019      
-00003944                          1020      *DO*
-00003944  43F8 2468               1021      LEA D0REG, A1
-00003948  143C 0010               1022      MOVE.B #16,D2
-0000394C  103C 000E               1023      MOVE.B #14, D0
-00003950  4E4F                    1024      TRAP #15
-00003952  2210                    1025      MOVE.L (A0),D1
-00003954  103C 000F               1026      MOVE.B #15, D0
-00003958  4E4F                    1027      TRAP #15
-0000395A  103C 000D               1028      MOVE.B #13, D0
-0000395E  43F8 243E               1029      LEA NL,A1
-00003962  4E4F                    1030      TRAP #15
-00003964                          1031  
-00003964                          1032      *D1*
-00003964  43F8 246D               1033      LEA D1REG, A1
-00003968  143C 0010               1034      MOVE.B #16,D2
-0000396C  103C 000E               1035      MOVE.B #14, D0 
-00003970  4E4F                    1036      TRAP #15
-00003972  2228 0004               1037      MOVE.L (4,A0),D1
-00003976  103C 000F               1038      MOVE.B #15, D0
-0000397A  4E4F                    1039      TRAP #15
-0000397C  103C 000D               1040      MOVE.B #13, D0
-00003980  43F8 243E               1041      LEA NL,A1
-00003984  4E4F                    1042      TRAP #15
-00003986                          1043  
-00003986                          1044      
-00003986                          1045      *D2*
-00003986  43F8 2472               1046      LEA D2REG, A1
-0000398A  143C 0010               1047      MOVE.B #16,D2
-0000398E  103C 000E               1048      MOVE.B #14, D0 
-00003992  4E4F                    1049      TRAP #15
-00003994  2228 0008               1050      MOVE.L (8,A0),D1
-00003998  103C 000F               1051      MOVE.B #15, D0
-0000399C  4E4F                    1052      TRAP #15
-0000399E  103C 000D               1053      MOVE.B #13, D0
-000039A2  43F8 243E               1054      LEA NL,A1
-000039A6  4E4F                    1055      TRAP #15
-000039A8                          1056  
-000039A8                          1057  
-000039A8                          1058      *D3*
-000039A8  43F8 2477               1059      LEA D3REG, A1
-000039AC  143C 0010               1060      MOVE.B #16,D2
-000039B0  103C 000E               1061      MOVE.B #14, D0 
-000039B4  4E4F                    1062      TRAP #15
-000039B6  2228 000C               1063      MOVE.L (12,A0),D1
-000039BA  103C 000F               1064      MOVE.B #15, D0
-000039BE  4E4F                    1065      TRAP #15
-000039C0  103C 000D               1066      MOVE.B #13, D0
-000039C4  43F8 243E               1067      LEA NL,A1
-000039C8  4E4F                    1068      TRAP #15
-000039CA                          1069      
-000039CA                          1070      *D4*
-000039CA  43F8 247C               1071      LEA D4REG, A1
-000039CE  143C 0010               1072      MOVE.B #16,D2
-000039D2  103C 000E               1073      MOVE.B #14, D0 
-000039D6  4E4F                    1074      TRAP #15
-000039D8  2228 0010               1075      MOVE.L (16,A0),D1
-000039DC  103C 000F               1076      MOVE.B #15, D0
-000039E0  4E4F                    1077      TRAP #15
-000039E2  103C 000D               1078      MOVE.B #13, D0
-000039E6  43F8 243E               1079      LEA NL,A1
-000039EA  4E4F                    1080      TRAP #15
-000039EC                          1081      
-000039EC                          1082      *D5*
-000039EC  43F8 2481               1083      LEA D5REG, A1
-000039F0  143C 0010               1084      MOVE.B #16,D2
-000039F4  103C 000E               1085      MOVE.B #14, D0 
-000039F8  4E4F                    1086      TRAP #15
-000039FA  2228 0014               1087      MOVE.L (20,A0),D1
-000039FE  103C 000F               1088      MOVE.B #15, D0
-00003A02  4E4F                    1089      TRAP #15
-00003A04  103C 000D               1090      MOVE.B #13, D0
-00003A08  43F8 243E               1091      LEA NL,A1
-00003A0C  4E4F                    1092      TRAP #15
-00003A0E                          1093      
-00003A0E                          1094      *D6*
-00003A0E  43F8 2486               1095      LEA D6REG, A1
-00003A12  143C 0010               1096      MOVE.B #16,D2
-00003A16  103C 000E               1097      MOVE.B #14, D0 
-00003A1A  4E4F                    1098      TRAP #15
-00003A1C  2228 0018               1099      MOVE.L (24,A0),D1
-00003A20  103C 000F               1100      MOVE.B #15, D0
-00003A24  4E4F                    1101      TRAP #15
-00003A26  103C 000D               1102      MOVE.B #13, D0
-00003A2A  43F8 243E               1103      LEA NL,A1
-00003A2E  4E4F                    1104      TRAP #15
-00003A30                          1105      
-00003A30                          1106      *D7*
-00003A30  43F8 248B               1107      LEA D7REG, A1
-00003A34  143C 0010               1108      MOVE.B #16,D2
-00003A38  103C 000E               1109      MOVE.B #14, D0 
-00003A3C  4E4F                    1110      TRAP #15
-00003A3E  2228 001C               1111      MOVE.L (28,A0),D1
-00003A42  103C 000F               1112      MOVE.B #15, D0
-00003A46  4E4F                    1113      TRAP #15
-00003A48  103C 000D               1114      MOVE.B #13, D0
-00003A4C  43F8 243E               1115      LEA NL,A1
-00003A50  4E4F                    1116      TRAP #15
-00003A52                          1117      
-00003A52                          1118      *A0*
-00003A52  43F8 243F               1119      LEA A0REG, A1
-00003A56  143C 0010               1120      MOVE.B #16,D2
-00003A5A  103C 000E               1121      MOVE.B #14, D0 
-00003A5E  4E4F                    1122      TRAP #15
-00003A60  2228 0020               1123      MOVE.L (32,A0),D1
-00003A64  103C 000F               1124      MOVE.B #15, D0
-00003A68  4E4F                    1125      TRAP #15
-00003A6A  103C 000D               1126      MOVE.B #13, D0
-00003A6E  43F8 243E               1127      LEA NL,A1
-00003A72  4E4F                    1128      TRAP #15
-00003A74                          1129      
-00003A74                          1130      *A1*
-00003A74  43F8 2444               1131      LEA A1REG, A1
-00003A78  143C 0010               1132      MOVE.B #16,D2
-00003A7C  103C 000E               1133      MOVE.B #14, D0 
-00003A80  4E4F                    1134      TRAP #15
-00003A82  2228 0024               1135      MOVE.L (36,A0),D1
-00003A86  103C 000F               1136      MOVE.B #15, D0
-00003A8A  4E4F                    1137      TRAP #15
-00003A8C  103C 000D               1138      MOVE.B #13, D0
-00003A90  43F8 243E               1139      LEA NL,A1
-00003A94  4E4F                    1140      TRAP #15
-00003A96                          1141      
-00003A96                          1142      *A2*
-00003A96  43F8 2448               1143      LEA A2REG, A1
-00003A9A  143C 0010               1144      MOVE.B #16,D2
-00003A9E  103C 000E               1145      MOVE.B #14, D0 
-00003AA2  4E4F                    1146      TRAP #15
-00003AA4  2228 0028               1147      MOVE.L (40,A0),D1
-00003AA8  103C 000F               1148      MOVE.B #15, D0
-00003AAC  4E4F                    1149      TRAP #15
-00003AAE  103C 000D               1150      MOVE.B #13, D0
-00003AB2  43F8 243E               1151      LEA NL,A1
-00003AB6  4E4F                    1152      TRAP #15
-00003AB8                          1153      
-00003AB8                          1154      *A3*
-00003AB8  43F8 244D               1155      LEA A3REG, A1
-00003ABC  143C 0010               1156      MOVE.B #16,D2
-00003AC0  103C 000E               1157      MOVE.B #14, D0 
-00003AC4  4E4F                    1158      TRAP #15
-00003AC6  2228 002C               1159      MOVE.L (44,A0),D1
-00003ACA  103C 000F               1160      MOVE.B #15, D0
-00003ACE  4E4F                    1161      TRAP #15
-00003AD0  103C 000D               1162      MOVE.B #13, D0
-00003AD4  43F8 243E               1163      LEA NL,A1
-00003AD8  4E4F                    1164      TRAP #15
-00003ADA                          1165      
-00003ADA                          1166      *A4*
-00003ADA  43F8 2452               1167      LEA A4REG, A1
-00003ADE  143C 0010               1168      MOVE.B #16,D2
-00003AE2  103C 000E               1169      MOVE.B #14, D0 
-00003AE6  4E4F                    1170      TRAP #15
-00003AE8  2228 0030               1171      MOVE.L (48,A0),D1
-00003AEC  103C 000F               1172      MOVE.B #15, D0
-00003AF0  4E4F                    1173      TRAP #15
-00003AF2  103C 000D               1174      MOVE.B #13, D0
-00003AF6  43F8 243E               1175      LEA NL,A1
-00003AFA  4E4F                    1176      TRAP #15
-00003AFC                          1177  
-00003AFC                          1178      *A5*
-00003AFC  43F8 2457               1179      LEA A5REG, A1
-00003B00  143C 0010               1180      MOVE.B #16,D2
-00003B04  103C 000E               1181      MOVE.B #14, D0
-00003B08  4E4F                    1182      TRAP #15
-00003B0A  2228 0034               1183      MOVE.L (52,A0),D1
-00003B0E  103C 000F               1184      MOVE.B #15, D0
-00003B12  4E4F                    1185      TRAP #15
-00003B14  103C 000D               1186      MOVE.B #13, D0
-00003B18  43F8 243E               1187      LEA NL,A1
-00003B1C  4E4F                    1188      TRAP #15
-00003B1E                          1189      
-00003B1E                          1190      *A6*
-00003B1E  43F8 245C               1191      LEA A6REG, A1
-00003B22  143C 0010               1192      MOVE.B #16,D2
-00003B26  103C 000E               1193      MOVE.B #14, D0 
-00003B2A  4E4F                    1194      TRAP #15
-00003B2C  2228 0038               1195      MOVE.L (56,A0),D1
-00003B30  103C 000F               1196      MOVE.B #15, D0
-00003B34  4E4F                    1197      TRAP #15
-00003B36  103C 000D               1198      MOVE.B #13, D0
-00003B3A  43F8 243E               1199      LEA NL,A1
-00003B3E  4E4F                    1200      TRAP #15
-00003B40                          1201  
-00003B40                          1202      *A7*
-00003B40  43F8 2460               1203      LEA A7REG, A1
-00003B44  143C 0010               1204      MOVE.B #16,D2
-00003B48  103C 000E               1205      MOVE.B #14, D0 
-00003B4C  4E4F                    1206      TRAP #15
-00003B4E  2228 003C               1207      MOVE.L (60,A0),D1
-00003B52  103C 000F               1208      MOVE.B #15, D0
-00003B56  4E4F                    1209      TRAP #15
-00003B58  103C 000D               1210      MOVE.B #13, D0
-00003B5C  43F8 243E               1211      LEA NL,A1
-00003B60  4E4F                    1212      TRAP #15
-00003B62                          1213  
-00003B62                          1214      
-00003B62                          1215      *PC*
-00003B62  43F8 249B               1216      LEA PCREG, A1
-00003B66  143C 0010               1217      MOVE.B #16,D2
-00003B6A  103C 000E               1218      MOVE.B #14, D0 
-00003B6E  4E4F                    1219      TRAP #15
-00003B70  2238 258E               1220      MOVE.L PC_STORE,D1 ; get pc val
-00003B74  103C 000F               1221      MOVE.B #15, D0
-00003B78  4E4F                    1222      TRAP #15
-00003B7A  103C 000D               1223      MOVE.B #13, D0
-00003B7E  43F8 243E               1224      LEA NL,A1
-00003B82  4E4F                    1225      TRAP #15
-00003B84                          1226      
-00003B84                          1227      *SR*
-00003B84  43F8 2496               1228      LEA SRREG, A1
-00003B88  143C 0010               1229      MOVE.B #16,D2
-00003B8C  103C 000E               1230      MOVE.B #14, D0
-00003B90  4E4F                    1231      TRAP #15
-00003B92  4281                    1232      CLR.L D1
-00003B94  3238 2594               1233      MOVE.W REG_STORE,D1
-00003B98  103C 000F               1234      MOVE.B #15, D0
-00003B9C  4E4F                    1235      TRAP #15
-00003B9E  103C 000D               1236      MOVE.B #13, D0
-00003BA2  43F8 243E               1237      LEA NL,A1
-00003BA6  4E4F                    1238      TRAP #15
-00003BA8                          1239  
-00003BA8                          1240      
-00003BA8                          1241      *USP*
-00003BA8  40C6                    1242      MOVE.W SR,D6
-00003BAA  0886 000D               1243      BCLR #13,D6     
-00003BAE  46C6                    1244      MOVE.W D6,SR
-00003BB0  43F8 2490               1245      LEA USPREG, A1
-00003BB4  143C 0010               1246      MOVE.B #16,D2
-00003BB8  103C 000E               1247      MOVE.B #14, D0 
-00003BBC  4E4F                    1248      TRAP #15
-00003BBE  220F                    1249      MOVE.L A7,D1
-00003BC0  103C 000F               1250      MOVE.B #15, D0
-00003BC4  4E4F                    1251      TRAP #15
-00003BC6  103C 000D               1252      MOVE.B #13, D0
-00003BCA  43F8 243E               1253      LEA NL,A1
-00003BCE  4E4F                    1254      TRAP #15
-00003BD0  4E41                    1255      TRAP #1 
-00003BD2                          1256     
-00003BD2                          1257  BSCH:
-00003BD2  48E7 FFFE               1258      MOVEM.L A0-A6/D0-D7, -(SP)
-00003BD6  2449                    1259      MOVE.L A1,A2    ; address1 in A0, address2 in A1, String in A5
-00003BD8  95C8                    1260      SUB.L A0,A2     ; len of search space
-00003BDA  B68A                    1261      CMP.L A2,D3     ; if smaller than string no match
-00003BDC  6E00 001E               1262      BGT NO_MATCH_BSCH   ;d3 Hhas len
-00003BE0  2449                    1263      MOVE.L A1,A2
-00003BE2  95C3                    1264      SUB.L D3,A2
-00003BE4                          1265  FOR_C_IN_SPACE:
-00003BE4  2C48                    1266      MOVE.L A0,A6    ; address1
-00003BE6  3003                    1267      MOVE.W D3,D0    ; len
-00003BE8  6100 F95E               1268      BSR CHECK_MATCH
-00003BEC  4A00                    1269      TST.B D0
-00003BEE  6700 001C               1270      BEQ FOUND
-00003BF2  5288                    1271      ADD.L #1,A0    ; c += 1
-00003BF4  B1CA                    1272      CMP.L A2,A0
-00003BF6  6E00 0004               1273      BGT NO_MATCH_BSCH    ;reached end, not found
-00003BFA  60E8                    1274      BRA FOR_C_IN_SPACE
-00003BFC                          1275      
-00003BFC                          1276  NO_MATCH_BSCH:
-00003BFC  43F8 255C               1277      LEA NO_STRING_MATCH,A1       
-00003C00  103C 000D               1278      MOVE.B #13,D0
-00003C04  4E4F                    1279      TRAP #15
-00003C06  4CDF 7FFF               1280      MOVEM.L (SP)+,A0-A6/D0-D7
-00003C0A  4E75                    1281      RTS
-00003C0C                          1282  FOUND:
-00003C0C  43F8 256E               1283      LEA STRING_MATCH,A1       ; print found text
-00003C10  103C 000D               1284      MOVE.B #13,D0
-00003C14  4E4F                    1285      TRAP #15
-00003C16  43F8 2581               1286      LEA ADDRESS,A1  
-00003C1A  103C 000E               1287      MOVE.B #14,D0   
-00003C1E  4E4F                    1288      TRAP #15
-00003C20  2208                    1289      MOVE.L A0,D1
-00003C22  143C 0010               1290      MOVE.B #16,D2   
-00003C26  103C 000F               1291      MOVE.B #15,D0   
-00003C2A  4E4F                    1292      TRAP #15
-00003C2C  43F8 258A               1293      LEA COLON,A1    
-00003C30  103C 000E               1294      MOVE.B #14,D0
-00003C34  4E4F                    1295      TRAP #15
-00003C36  2248                    1296      MOVE.L A0,A1    
-00003C38  103C 0000               1297      MOVE.B #0,D0
-00003C3C  3203                    1298      MOVE.W D3,D1
-00003C3E  4E4F                    1299      TRAP #15                  
-00003C40  4CDF 7FFF               1300      MOVEM.L (SP)+,A0-A6/D0-D7
-00003C44  4E75                    1301      RTS
-00003C46                          1302  
-00003C46                          1303        
-00003C46                          1304      
-00006000                          1305      ORG $6000       ; Go
-00006000  700D                    1306      MOVE.L #13,D0
-00006002  43F8 20B2               1307      LEA USERPROMPT,A1
-00006006  4E4F                    1308      TRAP #15
-00006008  6000 D03E               1309      BRA SHELL 
-0000600C                          1310      
-0000600C                          1311      *technically all these use go
-00006010                          1312      ORG $6010
-00006010= F000                    1313      DC.W $F000      ; Line F emulator
-00006012  6000 D034               1314      BRA SHELL
-00006016                          1315      
-00006020                          1316      ORG $6020
-00006020= A000                    1317      DC.W $A000      ; Line A emulator
-00006022  6000 D024               1318      BRA SHELL
-00006026                          1319      
-00006030                          1320      ORG $6030       ; Illegal instruciton
-00006030= 4AFA                    1321      DC.W $4AFA          
-00006032  6000 D014               1322      BRA SHELL
-00006036                          1323      
-00006040                          1324      ORG $6040       ; divide by zero
-00006040  700A                    1325      MOVE.L #10,D0  
-00006042  7200                    1326      MOVE.L #0,D1
-00006044  80C1                    1327      DIVU.W D1,D0
-00006046  6000 D000               1328      BRA SHELL
-0000604A                          1329  
-00006050                          1330      ORG $6050
-00006050  303C 0001               1331      MOVE.W #1,D0   ; check instruction
-00006054  4241                    1332      CLR.W D1
-00006056  4181                    1333      CHK.W D1,D0
-00006058  6000 CFEE               1334      BRA SHELL
-0000605C                          1335      
-00006060                          1336      ORG $6060
-00006060  027C 00FF               1337      ANDI.W #$00FF,SR    ;privelage error
-00006064  007C 1000               1338      OR.W #$1000, SR     
-00006068  6000 CFDE               1339      BRA SHELL
-0000606C                          1340      
-0000606C                          1341      END START
+000020B2= 44 6F 20 63 6F 6F ...     34  USERPROGRAM DC.B 'Do cool shit here: ',0
+000020C6= 4D 44 53 50 3A 20 ...     35  MDSPHELPPROMPT DC.B 'MDSP: Outputs Address and Memory contents from <address1> to <address2>',CR,LF,'MDSP <address1> <address2> eg: MDSP $908 $90A<CR>',CR,LF,0
+00002143= 53 4F 52 54 57 3A ...     36  SORTWHELPPROMPT DC.B 'SORTW: Sorts a block of memory from <address1> to <address2>. The order is specified by the following.',CR,LF,'A: Ascending order',CR,LF,'D: Descending order',CR,LF,'SORTW <address1> <address2> <order>',CR,LF,0
+000021FA= 4D 4D 3A 20 44 69 ...     37  MMHELPPROMPT DC.B 'MM: Display memory and optionally enter new data. Can specify Byte, Word, or Long size.',CR,LF,'MM <size> <address>',CR,LF,0
+00002269= 4D 53 3A 20 41 6C ...     38  MSHELPPROMPT DC.B 'MS: Alters memory by setting data into the specified address. Can take ASCII string or HEX',CR,LF,'MS <address> <string>',CR,LF,0
+000022DD= 42 54 53 54 3A 20 ...     39  BTSTHELPPROMPT DC.B 'BTST: <address1> <address2>',CR,LF,0
+000022FB= 42 4D 4F 56 3A 20 ...     40  BMOVHELPPROMPT DC.B 'BMOV: Moves bytes of memory from <address1> to <address2>',CR,LF,'BMOV <address1> <address2> <n>',CR,LF,0
+00002357= 42 46 3A 20 46 69 ...     41  BFHELPPROMPT DC.B 'BF: Fills memory from <address1> to <address2> with the provieded data as input. <data> must be word sized  ',CR,LF,'BF <address1> <address2> <data>',CR,LF,0
+000023E7= 42 53 43 48 3A 20 ...     42  BSCHHELPPROMPT DC.B 'BSCH: Searches for literal <string>  between <address1> and <address2>',CR,LF,'BSCH <address1> <address2> <string>',CR,LF,0
+00002455= 47 4F 3A 20 42 65 ...     43  GOHELPPROMPT DC.B 'GO: Begin execution of program at address',CR,LF,'GO <address>',CR,LF,0
+0000248F= 44 46 3A 20 44 69 ...     44  DFHELPPROMPT DC.B 'DF: Displays register contents',CR,LF,0 
+000024B0= 46 4F 4E 54 3A 20 ...     45  FONTHELPROMPT DC.B 'FONT: Changes the color of the font.',CR,LF,'<color> is a 6 digit hex number specifing the RGB. 0xBBGGRR: eg: FONT <color>',CR,LF,0
+00002526= 45 43 48 4F 3A 20 ...     46  ECHOHELPPROMPT DC.B 'ECHO: prints put what the user input',CR,LF,'ECHO <string>',CR,LF,0
+0000255C= 45 58 49 54 3A 20 ...     47  EXITHELPPROMPT DC.B 'EXIT: Stops Program',CR,LF,0
+00002572= 00                        48  NL: DC.B 0
+00002573                            49      
+00002573                            50  **Print out for registers**
+00002573= 41 30 3A 20 00            51  A0REG: DC.B 'A0: ',0
+00002578= 41 31 3A 00               52  A1REG: DC.B 'A1:',0
+0000257C= 41 32 3A 20 00            53  A2REG: DC.B 'A2: ',0
+00002581= 41 33 3A 20 00            54  A3REG: DC.B 'A3: ',0
+00002586= 41 34 3A 20 00            55  A4REG: DC.B 'A4: ',0
+0000258B= 41 35 3A 20 00            56  A5REG: DC.B 'A5: ',0
+00002590= 41 36 3A 00               57  A6REG: DC.B 'A6:',0
+00002594= 41 37 2F 53 53 50 ...     58  A7REG: DC.B 'A7/SSP:',0
+0000259C= 44 30 3A 20 00            59  D0REG: DC.B 'D0: ',0
+000025A1= 44 31 3A 20 00            60  D1REG: DC.B 'D1: ',0
+000025A6= 44 32 3A 20 00            61  D2REG: DC.B 'D2: ',0
+000025AB= 44 33 3A 20 00            62  D3REG: DC.B 'D3: ',0
+000025B0= 44 34 3A 20 00            63  D4REG: DC.B 'D4: ',0
+000025B5= 44 35 3A 20 00            64  D5REG: DC.B 'D5: ',0
+000025BA= 44 36 3A 20 00            65  D6REG: DC.B 'D6: ',0
+000025BF= 44 37 3A 20 00            66  D7REG: DC.B 'D7: ',0
+000025C4= 55 53 50 3A 20 00         67  USPREG: DC.B 'USP: ',0
+000025CA= 53 52 3A 20 00            68  SRREG: DC.B 'SR: ',0
+000025CF= 50 43 3A 20 00            69  PCREG: DC.B 'PC: ',0
+000025D4                            70  
+000025D4                            71  **exception prompts**
+000025D4                            72  ** GO $6010 - LINE F
+000025D4                            73  ** GO $6020 - LINE A
+000025D4                            74  ** GO $6030 - ILLEGAL INSTUCTION
+000025D4                            75  ** GO $6040 - Divide by Zero
+000025D4                            76  ** GO $6050 - Check
+000025D4                            77  ** GO $6060 - Privalege
+000025D4= 41 64 64 72 65 73 ...     78  ADDRESS_ER: DC.B 'Address Trap Error ',0
+000025E8= 49 6C 6C 65 67 61 ...     79  ILLEGAL_ER: DC.B 'Illegal Instruction Trap Error',0
+00002607= 50 72 69 76 65 6C ...     80  PRIVALAGE_ER: DC.B 'Privelage Violation Exception',0
+00002625= 44 69 76 69 64 65 ...     81  DIVIDE_Z_ER: DC.B 'Divide by 0 error',0
+00002637= 43 68 65 63 6B 20 ...     82  CHECK_ER: DC.B 'Check instruction error',0
+0000264F= 4C 69 6E 65 20 41 ...     83  LINEA_ER: DC.B 'Line A Emulator exception',0
+00002669= 4C 69 6E 65 20 46 ...     84  LINEF_ER: DC.B 'Line F Emulator exception',0 
+00002683                            85  
+00002683                            86  *Strings to print out
+00002683= 47 4F 20 41 44 44 ...     87  GO_ADDRESS: DC.B 'GO ADDRESS: ',0
+00002690= 44 69 64 6E 74 20 ...     88  NO_STRING_MATCH DC.B 'Didnt find string',0
+000026A2= 46 6F 75 6E 64 20 ...     89  STRING_MATCH DC.B 'Found the String!!',0
+000026B5= 41 44 44 52 45 53 ...     90  ADDRESS: DC.B 'ADDRESS ',0
+000026BE= 20 3A 20 00               91  COLON: DC.B ' : ',0
+000026C2                            92  
+000026C2                            93  *Storage loction for PC, SSR, 
+000026C2                            94  PC_STORE DS.L 1
+000026C6                            95  REGNUM DS.B 1
+000026C8                            96  REG_STORE DS.L 1
+000026CC                            97    
+000026CC                            98        
+00003000                            99      ORG    $3000
+00003000                           100  START:
+00003000                           101  
+00003000                           102      **exception vectors**
+00003000  21FC 000035AC 000C       103      MOVE.L #ADDRESS_ERRORV,$C
+00003008  21FC 000035E2 0010       104      MOVE.L #ILLEGAL_INSTRV,$10
+00003010  21FC 0000362A 0014       105      MOVE.L #DIVIDE_ZEROV,$14
+00003018  21FC 0000364E 0018       106      MOVE.L #CHECK_INSTRV,$18
+00003020  21FC 00003606 0020       107      MOVE.L #PRIVALEGEV,$20
+00003028  21FC 00003672 0028       108      MOVE.L #LINEAV,$28
+00003030  21FC 00003696 002C       109      MOVE.L #LINEFV,$2C
+00003038  21FC 000035A4 0084       110      MOVE.L #TRAPING_HOES,$84  
+00003040                           111      
+00003040                           112  INIT:
+00003040  6000 0006                113      BRA SHELL
+00003044                           114  SHELL_RESET:
+00003044  4CDF 7FFF                115      MOVEM.L (SP)+, A0-A6/D0-D7
+00003048                           116  SHELL:
+00003048  48E7 FFFE                117      MOVEM.L A0-A6/D0-D7, -(SP)
+0000304C  43F8 2000                118      LEA SHELL_PROMPT,A1       ; will print out MONITOR441>
+00003050  103C 000E                119      MOVE.B #14,D0
+00003054  4E4F                     120      TRAP #15
+00003056  43F8 200C                121      LEA INPUT,A1
+0000305A  103C 0002                122      MOVE.B #2,D0        ; parse cmd and read input
+0000305E  4E4F                     123      TRAP #15
+00003060  3C01                     124      MOVE.W D1,D6        ; keep length of string for comparisons
+00003062  B27C 0000                125      CMP.W #0,D1         ; check if the input string is empty
+00003066  67DC                     126      BEQ SHELL_RESET     ; if empty, restart prompt
+00003068  4BF8 200C                127      LEA INPUT,A5        ; put into A5
+0000306C  4DF8 2076                128      LEA MDSPCOMMAND,A6  ; load MDSP command into A6
+00003070  303C 0004                129      MOVE.W #4,D0        ; since MDSP is 4 char long, put 4 into D0 for comp
+00003074  6100 0504                130      BSR CHECK_MATCH      ; compare the two stirngs
+00003078  4A40                     131      TST.W D0            ; check if D0 == 0
+0000307A  6600 005C                132      BNE MM_FUNC         ; if false, there is no match, so branch to test next instruction
+0000307E                           133      
+0000307E                           134      **Code to execute MDSP if the test above is true.
+0000307E  2A49                     135      MOVE.L A1,A5
+00003080  5A4D                     136      ADD #5,A5           ; Skip to address1
+00003082  2C4D                     137      MOVE.L A5,A6
+00003084  6100 04DE                138      BSR FIND_END        ; find the end of address1
+00003088  6100 0630                139      BSR COMMAND_PARSE         ; A5 has begining of address1 and A6 has end of this. parse this address.
+0000308C  4A41                     140      TST D1              ; D0 will hold address1
+0000308E  6600 003C                141      BNE MDSP_ERR        ; wring type of address
+00003092  2400                     142      MOVE.L D0,D2
+00003094  528E                     143      ADD.L #1,A6         ; go to address2
+00003096  2A4E                     144      MOVE.L A6,A5         
+00003098  6100 04CA                145      BSR FIND_END        ; find end of address2
+0000309C  D3C6                     146      ADD.L D6,A1         ; increment A1 to end of command
+0000309E  BDC9                     147      CMP.L A1,A6         ; compare contents of A1 to A6 to ensure address2 is correct
+000030A0  6700 0010                148      BEQ MDSP_2_ARGS     ; two addresses were given
+000030A4  2A42                     149      MOVE.L D2,A5        ; A5= address1, A6=address2
+000030A6  2C42                     150      MOVE.L D2,A6
+000030A8  DDFC 00000010            151      ADD.L #16,A6        ; add 16 to address1 since only 1 address was given
+000030AE  6000 0010                152      BRA MDSP_EX
+000030B2                           153      
+000030B2                           154  MDSP_2_ARGS:             
+000030B2  6100 0606                155      BSR COMMAND_PARSE         
+000030B6  4A41                     156      TST D1
+000030B8  6600 0012                157      BNE MDSP_ERR
+000030BC  2A42                     158      MOVE.L D2,A5
+000030BE  2C40                     159      MOVE.L D0,A6
+000030C0                           160  MDSP_EX:
+000030C0  6100 0666                161      BSR MDSP
+000030C4  4CDF 7FFF                162      MOVEM.L (SP)+, A0-A6/D0-D7
+000030C8  6000 FF7E                163      BRA SHELL
+000030CC                           164      
+000030CC                           165  MDSP_ERR:
+000030CC  6100 03D8                166      BSR MDSPHELP      
+000030D0  4CDF 7FFF                167      MOVEM.L (SP)+, A0-A6/D0-D7
+000030D4  6000 FF72                168      BRA SHELL
+000030D8                           169  
+000030D8                           170  *Check for MM 
+000030D8                           171  MM_FUNC:
+000030D8  4DF8 2081                172      LEA MMCOMMAND,A6
+000030DC  303C 0002                173      MOVE.W #2,D0    ; MM command size is 2
+000030E0  6100 0498                174      BSR CHECK_MATCH ; check if input is MM
+000030E4  4A40                     175      TST.W D0                   
+000030E6  6600 0072                176      BNE SW_FUNC     ; Not MM? Go to SORTW
+000030EA                           177      
+000030EA                           178      **Code to execute MM
+000030EA  5A8D                     179      ADD.L #5,A5     ; skip to size arg
+000030EC  4DF8 200C                180      LEA INPUT,A6
+000030F0  DDC6                     181      ADD.L D6,A6     ; PPOINT A6 to end of address
+000030F2  6100 05C6                182      BSR COMMAND_PARSE
+000030F6  4A41                     183      TST D1
+000030F8  6700 000E                184      BEQ MM_CHECK_SIZE
+000030FC  6100 036C                185      BSR MMHELP      
+00003100  4CDF 7FFF                186      MOVEM.L (SP)+, A0-A6/D0-D7
+00003104  6000 FF42                187      BRA SHELL
+00003108                           188      
+00003108                           189  MM_CHECK_SIZE:
+00003108  558D                     190      SUB.L #2,A5     ; decrement A5 by two to go back to the size
+0000310A  2040                     191      MOVE.L D0,A0    ; put address to modify in D0 into A0
+0000310C  0C15 0042                192      CMP.B #'B',(A5) ; check if the parsed arguement is B.
+00003110  6700 001E                193      BEQ MM_B
+00003114  0C15 0057                194      CMP.B #'W',(A5)
+00003118  6700 0024                195      BEQ MM_W
+0000311C  0C15 004C                196      CMP.B #'L',(A5)
+00003120  6700 002A                197      BEQ MM_L
+00003124  6100 0344                198      BSR MMHELP       ; if it's not either one of the three. There's an error.
+00003128  4CDF 7FFF                199      MOVEM.L (SP)+, A0-A6/D0-D7
+0000312C  6000 FF1A                200      BRA SHELL
+00003130                           201  MM_B:           
+00003130  4287                     202      CLR.L D7
+00003132  6100 0646                203      BSR MM
+00003136  4CDF 7FFF                204      MOVEM.L (SP)+, A0-A6/D0-D7
+0000313A  6000 FF0C                205      BRA SHELL
+0000313E                           206  MM_W:                 
+0000313E  7E01                     207      MOVE.L #1, D7
+00003140  6100 0638                208      BSR MM
+00003144  4CDF 7FFF                209      MOVEM.L (SP)+, A0-A6/D0-D7
+00003148  6000 FEFE                210      BRA SHELL
+0000314C                           211  MM_L:             
+0000314C  7E02                     212      MOVE.L #2, D7
+0000314E  6100 062A                213      BSR MM
+00003152  4CDF 7FFF                214      MOVEM.L (SP)+, A0-A6/D0-D7
+00003156  6000 FEF0                215      BRA SHELL 
+0000315A                           216  
+0000315A                           217  *Check for SORTW
+0000315A                           218  SW_FUNC:
+0000315A  4DF8 207B                219      LEA SORTWCOMMAND,A6 ; put sortw into A6     
+0000315E  303C 0005                220      MOVE.W #5,D0
+00003162  6100 0416                221      BSR CHECK_MATCH
+00003166  4A40                     222      TST.W D0            
+00003168  6600 007E                223      BNE BMOV_FUNC
+0000316C                           224      
+0000316C  508D                     225      ADD.L #8,A5         ; this is the start of address1     
+0000316E  2C4D                     226      MOVE.L A5,A6
+00003170  6100 03F2                227      BSR FIND_END        ; find end
+00003174  6100 0544                228      BSR COMMAND_PARSE         ; get inputs 
+00003178  4A41                     229      TST D1
+0000317A  6600 0060                230      BNE SORTW_ERR       ; incorrect arguemnts 
+0000317E  2C00                     231      MOVE.L D0,D6        ; put address1 in D6
+00003180  528E                     232      ADD.L #1,A6
+00003182  2A4E                     233      MOVE.L A6,A5
+00003184  6100 03DE                234      BSR FIND_END        ; getting second address
+00003188  6100 0530                235      BSR COMMAND_PARSE         
+0000318C  4A41                     236      TST D1
+0000318E  6600 004C                237      BNE SORTW_ERR       ; wrong arguments
+00003192  4BF8 200C                238      LEA INPUT,A5
+00003196  5C8D                     239      ADD.L #6,A5         ; get the letter. D or A
+00003198  0C15 0041                240      CMP.B #'A',(A5)
+0000319C  6700 002A                241      BEQ SORTA
+000031A0  0C15 0044                242      CMP.B #'D',(A5)
+000031A4  6700 000E                243      BEQ SORTD
+000031A8  6100 02E8                244      BSR SORTWHELP        ; No letter, or incorrect letter. 
+000031AC  4CDF 7FFF                245      MOVEM.L (SP)+, A0-A6/D0-D7
+000031B0  6000 FE96                246      BRA SHELL
+000031B4                           247      
+000031B4                           248  * descending 
+000031B4                           249  SORTD:
+000031B4  2A46                     250      MOVE.L D6,A5
+000031B6  2C40                     251      MOVE.L D0,A6
+000031B8  103C 0001                252      MOVE.B #1,D0            
+000031BC  6100 0780                253      BSR SORTW
+000031C0  4CDF 7FFF                254      MOVEM.L (SP)+, A0-A6/D0-D7
+000031C4  6000 FE82                255      BRA SHELL
+000031C8                           256   *aascending  
+000031C8                           257  SORTA:
+000031C8  2A46                     258      MOVE.L D6,A5
+000031CA  2C40                     259      MOVE.L D0,A6
+000031CC  103C 0000                260      MOVE.B #0,D0
+000031D0  6100 076C                261      BSR SORTW            
+000031D4  4CDF 7FFF                262      MOVEM.L (SP)+, A0-A6/D0-D7
+000031D8  6000 FE6E                263      BRA SHELL
+000031DC                           264      
+000031DC                           265  SORTW_ERR:
+000031DC  6100 02B4                266      BSR SORTWHELP      ;PRINT HELP IF ERROR
+000031E0  4CDF 7FFF                267      MOVEM.L (SP)+, A0-A6/D0-D7
+000031E4  6000 FE62                268      BRA SHELL
+000031E8                           269      
+000031E8                           270      
+000031E8                           271  BMOV_FUNC:
+000031E8  4DF8 208F                272      LEA BMOVCOMMAND,A6  ;bmov into A6
+000031EC  303C 0004                273      MOVE.W #4,D0
+000031F0  6100 0388                274      BSR CHECK_MATCH
+000031F4  4A40                     275      TST.W D0          
+000031F6  6600 0058                276      BNE MS_FUNC         ; Not BMOV? go to MS
+000031FA                           277      
+000031FA                           278      
+000031FA  5A8D                     279      ADD.L #5,A5         ; address1 in A5     
+000031FC  2C4D                     280      MOVE.L A5,A6
+000031FE  6100 0364                281      BSR FIND_END
+00003202  6100 04B6                282      BSR COMMAND_PARSE
+00003206  4A41                     283      TST D1
+00003208  6600 003A                284      BNE BMOV_ERR
+0000320C  2A00                     285      MOVE.L D0,D5        ; address1 goes in d5
+0000320E  528E                     286      ADD.L #1,A6
+00003210  2A4E                     287      MOVE.L A6,A5
+00003212  6100 0350                288      BSR FIND_END        ; getting address2
+00003216  6100 04A2                289      BSR COMMAND_PARSE         ; 
+0000321A  2800                     290      MOVE.L D0,D4
+0000321C  4A41                     291      TST D1
+0000321E  6600 0024                292      BNE BMOV_ERR
+00003222  528E                     293      ADD.L #1,A6
+00003224  2A4E                     294      MOVE.L A6,A5
+00003226  6100 033C                295      BSR FIND_END        ; getting number of bytes to move
+0000322A  6100 048E                296      BSR COMMAND_PARSE         ; stored in D0
+0000322E  4A41                     297      TST D1
+00003230  6600 0012                298      BNE BMOV_ERR
+00003234  2A45                     299      MOVE.L D5,A5
+00003236  2C44                     300      MOVE.L D4,A6
+00003238  6100 06AE                301      BSR BMOV            ; call BMOV with A5=address1, A6=address2, D0=count
+0000323C  4CDF 7FFF                302      MOVEM.L (SP)+, A0-A6/D0-D7
+00003240  6000 FE06                303      BRA SHELL
+00003244                           304      
+00003244                           305  BMOV_ERR:
+00003244  6100 0288                306      BSR BMOVHELP
+00003248  4CDF 7FFF                307      MOVEM.L (SP)+, A0-A6/D0-D7
+0000324C  6000 FDFA                308      BRA SHELL 
+00003250                           309  
+00003250                           310      
+00003250                           311      
+00003250                           312  MS_FUNC:
+00003250  4DF8 2084                313      LEA MSCOMMAND,A6    ; put MS into A6
+00003254  303C 0002                314      MOVE.W #2,D0
+00003258  6100 0320                315      BSR CHECK_MATCH
+0000325C  4A40                     316      TST.W D0            
+0000325E  6600 0040                317      BNE BF_FUNC         
+00003262                           318      
+00003262  568D                     319      ADD.L #3,A5         ; starting address    
+00003264  2C4D                     320      MOVE.L A5,A6
+00003266  6100 02FC                321      BSR FIND_END
+0000326A  6100 044E                322      BSR COMMAND_PARSE
+0000326E  4A41                     323      TST D1
+00003270  6600 0022                324      BNE MS_ERR
+00003274  2A00                     325      MOVE.L D0,D5        ; address1 goes in D5
+00003276  528E                     326      ADD.L #1,A6         ; getting the data to store
+00003278  2A4E                     327      MOVE.L A6,A5        
+0000327A  4DF8 200C                328      LEA INPUT,A6
+0000327E  DDC6                     329      ADDA.L D6,A6        
+00003280  200E                     330      MOVE.L A6,D0
+00003282  908D                     331      SUB.L  A5,D0        ; getting size of bytes to move for BMOV
+00003284  5280                     332      ADDI.L #1,D0        
+00003286  2C45                     333      MOVE.L D5,A6    
+00003288  6100 065E                334      BSR BMOV            ; Call BMOV func for implementation 
+0000328C  4CDF 7FFF                335      MOVEM.L (SP)+, A0-A6/D0-D7
+00003290  6000 FDB6                336      BRA SHELL
+00003294                           337      
+00003294                           338  MS_ERR:
+00003294  6100 01E8                339      BSR MSHELP
+00003298  4CDF 7FFF                340      MOVEM.L (SP)+, A0-A6/D0-D7
+0000329C  6000 FDAA                341      BRA SHELL    
+000032A0                           342      
+000032A0                           343      
+000032A0                           344  BF_FUNC:
+000032A0  4DF8 208C                345      LEA BFCOMMAND,A6        ; put BF into A6
+000032A4  303C 0002                346      MOVE.W #2,D0
+000032A8  6100 02D0                347      BSR CHECK_MATCH
+000032AC  4A40                     348      TST.W D0
+000032AE  6000 0058                349      BRA BSCH_FUNC
+000032B2                           350      
+000032B2                           351      *implement bf
+000032B2  568D                     352      ADD.L #3,A5         ; getting address1   
+000032B4  2C4D                     353      MOVE.L A5,A6
+000032B6  6100 02AC                354      BSR FIND_END
+000032BA  6100 03FE                355      BSR COMMAND_PARSE
+000032BE  4A41                     356      TST D1
+000032C0  6600 003A                357      BNE BF_ERR
+000032C4  2A00                     358      MOVE.L D0,D5        ; D5 has address1
+000032C6  528E                     359      ADD.L #1,A6
+000032C8  2A4E                     360      MOVE.L A6,A5
+000032CA  6100 0298                361      BSR FIND_END        ; getting address2
+000032CE  6100 03EA                362      BSR COMMAND_PARSE         
+000032D2  2800                     363      MOVE.L D0,D4        ; D4 has address2
+000032D4  4A41                     364      TST D1
+000032D6  6600 0024                365      BNE BF_ERR
+000032DA  528E                     366      ADD.L #1,A6
+000032DC  2A4E                     367      MOVE.L A6,A5        
+000032DE  6100 0284                368      BSR FIND_END        ; getting data to fill blocks with
+000032E2  6100 03D6                369      BSR COMMAND_PARSE        
+000032E6  4A41                     370      TST D1
+000032E8  6600 0012                371      BNE BF_ERR
+000032EC  2A45                     372      MOVE.L D5,A5        ; address1
+000032EE  2C44                     373      MOVE.L D4,A6        ; address2
+000032F0  6100 060C                374      BSR BF
+000032F4  4CDF 7FFF                375      MOVEM.L (SP)+, A0-A6/D0-D7
+000032F8  6000 FD4E                376      BRA SHELL
+000032FC                           377      
+000032FC                           378  BF_ERR:
+000032FC  6100 01BC                379      BSR BFHELP
+00003300  4CDF 7FFF                380      MOVEM.L (SP)+, A0-A6/D0-D7
+00003304  6000 FD42                381      BRA SHELL   
+00003308                           382  
+00003308                           383  BSCH_FUNC:
+00003308  4DF8 2094                384      LEA BSCHCOMMAND,A6  ; PUT bsch IN a6
+0000330C  303C 0004                385      MOVE.W #4,D0
+00003310  6100 0268                386      BSR CHECK_MATCH
+00003314  4A40                     387      TST.W D0            
+00003316  6600 0052                388      BNE GO_FUNC
+0000331A                           389      
+0000331A                           390      
+0000331A  5A8D                     391      ADD.L #5,A5         ;Start address    
+0000331C  2C4D                     392      MOVE.L A5,A6
+0000331E  6100 0244                393      BSR FIND_END
+00003322  6100 0396                394      BSR COMMAND_PARSE
+00003326  4A41                     395      TST D1
+00003328  6600 0034                396      BNE BSCH_ERR
+0000332C  2040                     397      MOVE.L D0,A0        
+0000332E  528E                     398      ADD.L #1,A6
+00003330  2A4E                     399      MOVE.L A6,A5
+00003332  6100 0230                400      BSR FIND_END
+00003336  6100 0382                401      BSR COMMAND_PARSE
+0000333A  4A41                     402      TST D1
+0000333C  6600 0020                403      BNE BSCH_ERR
+00003340  2240                     404      MOVE.L D0,A1        ;second address
+00003342  528E                     405      ADD.L #1,A6         ; getting stirng to find
+00003344  2A4E                     406      MOVE.L A6,A5        
+00003346  4DF8 200C                407      LEA INPUT,A6
+0000334A  DDC6                     408      ADDA.L D6,A6        
+0000334C  200E                     409      MOVE.L A6,D0
+0000334E  908D                     410      SUB.L  A5,D0        
+00003350  2600                     411      MOVE.L D0,D3        
+00003352  6100 08B0                412      BSR BSCH
+00003356  4CDF 7FFF                413      MOVEM.L (SP)+, A0-A6/D0-D7
+0000335A  6000 FCEC                414      BRA SHELL
+0000335E                           415  BSCH_ERR:
+0000335E  6100 0182                416      BSR BSCHHELP
+00003362  4CDF 7FFF                417      MOVEM.L (SP)+, A0-A6/D0-D7
+00003366  6000 FCE0                418      BRA SHELL
+0000336A                           419      
+0000336A                           420  GO_FUNC:
+0000336A  4DF8 2099                421      LEA GOCOMMAND,A6    ; put go in A6
+0000336E  303C 0002                422      MOVE.W #2,D0
+00003372  6100 0206                423      BSR CHECK_MATCH          
+00003376  4A40                     424      TST.W D0
+00003378  6600 002C                425      BNE DF_FUNC
+0000337C                           426      
+0000337C  568D                     427      ADD.L #3,A5         ; get start address     
+0000337E  2C4D                     428      MOVE.L A5,A6
+00003380  6100 01E2                429      BSR FIND_END
+00003384  6100 0334                430      BSR COMMAND_PARSE
+00003388  4A41                     431      TST D1
+0000338A  6600 000E                432      BNE GO_ERR
+0000338E  21C0 26C8                433      MOVE.L D0,REG_STORE   ; put starting address of program in memory
+00003392  4CDF 7FFF                434      MOVEM.L (SP)+, A0-A6/D0-D7
+00003396  6000 0576                435      BRA GO
+0000339A                           436      
+0000339A                           437  GO_ERR:
+0000339A  4CDF 7FFF                438      MOVEM.L (SP)+, A0-A6/D0-D7
+0000339E  6100 0156                439      BSR GOHELP
+000033A2  6000 FCA4                440      BRA SHELL
+000033A6                           441      
+000033A6                           442  DF_FUNC:
+000033A6  4DF8 209C                443      LEA DFCOMMAND,A6    ; putting DF ni A6
+000033AA  303C 0002                444      MOVE.W #2,D0
+000033AE  6100 01CA                445      BSR CHECK_MATCH
+000033B2  4A40                     446      TST.W D0            
+000033B4  6600 001A                447      BNE FONT_FUNC
+000033B8                           448      
+000033B8                           449  PC_VAL:
+000033B8  21FC 000033B8 26C2       450      MOVE.L #PC_VAL,PC_STORE ; put PC in storage location to print out later
+000033C0  40F8 26C8                451      MOVE.W SR,REG_STORE       ; get SR data 
+000033C4  4CDF 7FFF                452      MOVEM.L (SP)+, A0-A6/D0-D7  
+000033C8  6100 05A6                453      BSR DF
+000033CC  6000 FC7A                454      BRA SHELL
+000033D0                           455      
+000033D0                           456  FONT_FUNC:
+000033D0  4DF8 20A8                457      LEA FONT,A6
+000033D4  303C 0004                458      MOVE.W #4,D0
+000033D8  6100 01A0                459      BSR CHECK_MATCH          
+000033DC  4A40                     460      TST.W D0
+000033DE  6600 002C                461      BNE ECHO_FUNC
+000033E2                           462      
+000033E2  5A8D                     463      ADD.L #5,A5         ; address into A5     
+000033E4  2C4D                     464      MOVE.L A5,A6
+000033E6  6100 017C                465      BSR FIND_END
+000033EA  6100 02CE                466      BSR COMMAND_PARSE
+000033EE  4A41                     467      TST D1
+000033F0  6600 000E                468      BNE FONT_ERR
+000033F4  2200                     469      MOVE.L D0,D1    ;value to change font color stored in D1
+000033F6  103C 0015                470      MOVE.B #21,D0
+000033FA  4E4F                     471      TRAP #15        ;change font color
+000033FC  6000 FC4A                472      BRA SHELL
+00003400                           473      
+00003400                           474  FONT_ERR:
+00003400  4CDF 7FFF                475      MOVEM.L (SP)+, A0-A6/D0-D7
+00003404  6100 0104                476      BSR FONTHELP
+00003408  6000 FC3E                477      BRA SHELL
+0000340C                           478      
+0000340C                           479      
+0000340C                           480  ECHO_FUNC:
+0000340C  4DF8 20AD                481      LEA ECHOCOMMAND,A6
+00003410  303C 0004                482      MOVE.W #4,D0
+00003414  6100 0164                483      BSR CHECK_MATCH          
+00003418  4A40                     484      TST.W D0
+0000341A  6600 002A                485      BNE EXIT_FUNC
+0000341E                           486      
+0000341E  5A8D                     487      ADD.L #5,A5         ; address into A5     
+00003420  2C4D                     488      MOVE.L A5,A6
+00003422  6100 0140                489      BSR FIND_END
+00003426  6100 0292                490      BSR COMMAND_PARSE
+0000342A  324D                     491      MOVE.W A5,A1
+0000342C  9DCD                     492      SUB.L A5,A6
+0000342E  320E                     493      MOVE.W A6,D1
+00003430  303C 000D                494      MOVE.W #13,D0
+00003434  4E4F                     495      TRAP #15        ; print out text
+00003436  6000 FC10                496      BRA SHELL
+0000343A                           497      
+0000343A                           498  ECHO_ERR:
+0000343A  4CDF 7FFF                499      MOVEM.L (SP)+, A0-A6/D0-D7
+0000343E  6100 00B6                500      BSR GOHELP
+00003442  6000 FC04                501      BRA SHELL
+00003446                           502      
+00003446                           503      
+00003446                           504  
+00003446                           505  EXIT_FUNC:
+00003446  4DF8 209F                506      LEA EXITCOMMAND,A6
+0000344A  303C 0004                507      MOVE.W #4,D0
+0000344E  6100 012A                508      BSR CHECK_MATCH
+00003452  4A40                     509      TST.W D0           
+00003454  6600 0008                510      BNE ERR 
+00003458                           511      
+00003458  303C 0009                512      MOVE.W #9,D0    ; 9 terminates the program
+0000345C  4E4F                     513      TRAP #15   
+0000345E                           514      
+0000345E                           515  ERR:
+0000345E  6100 00D2                516      BSR ALL_HELP_PROMPTS
+00003462  4CDF 7FFF                517      MOVEM.L (SP)+, A0-A6/D0-D7
+00003466  6000 FBE0                518      BRA SHELL
+0000346A                           519  
+0000346A                           520  MMHELP:
+0000346A  48E7 8040                521      MOVEM.L D0/A1, -(SP)
+0000346E  43F8 21FA                522      LEA MMHELPPROMPT, A1
+00003472  103C 000D                523      MOVE.B #13,D0  
+00003476  4E4F                     524      TRAP #15
+00003478  4CDF 0201                525      MOVEM.L (SP)+, D0/A1
+0000347C  4E75                     526      RTS
+0000347E                           527      
+0000347E                           528  MSHELP:
+0000347E  48E7 8040                529      MOVEM.L D0/A1, -(SP)
+00003482  43F8 2269                530      LEA MSHELPPROMPT, A1
+00003486  103C 000D                531      MOVE.B #13,D0
+0000348A  4E4F                     532      TRAP #15
+0000348C  4CDF 0201                533      MOVEM.L (SP)+, D0/A1
+00003490  4E75                     534      RTS
+00003492                           535  
+00003492                           536  SORTWHELP:
+00003492  48E7 8040                537      MOVEM.L D0/A1, -(SP)
+00003496  43F8 2143                538      LEA SORTWHELPPROMPT, A1
+0000349A  103C 000D                539      MOVE.B #13,D0
+0000349E  4E4F                     540      TRAP #15
+000034A0  4CDF 0201                541      MOVEM.L (SP)+, D0/A1
+000034A4  4E75                     542      RTS
+000034A6                           543      
+000034A6                           544  MDSPHELP:
+000034A6  48E7 8040                545      MOVEM.L D0/A1, -(SP)
+000034AA  43F8 20C6                546      LEA MDSPHELPPROMPT, A1
+000034AE  103C 000D                547      MOVE.B #13,D0
+000034B2  4E4F                     548      TRAP #15
+000034B4  4CDF 0201                549      MOVEM.L (SP)+, D0/A1
+000034B8  4E75                     550      RTS
+000034BA                           551      
+000034BA                           552  BFHELP:
+000034BA  48E7 8040                553      MOVEM.L D0/A1, -(SP)
+000034BE  43F8 2357                554      LEA BFHELPPROMPT, A1
+000034C2  103C 000D                555      MOVE.B #13,D0
+000034C6  4E4F                     556      TRAP #15
+000034C8  4CDF 0201                557      MOVEM.L (SP)+, D0/A1
+000034CC  4E75                     558      RTS
+000034CE                           559  
+000034CE                           560  BMOVHELP:
+000034CE  48E7 8040                561      MOVEM.L D0/A1, -(SP)
+000034D2  43F8 22FB                562      LEA BMOVHELPPROMPT, A1
+000034D6  103C 000D                563      MOVE.B #13,D0
+000034DA  4E4F                     564      TRAP #15
+000034DC  4CDF 0201                565      MOVEM.L (SP)+, D0/A1
+000034E0  4E75                     566      RTS
+000034E2                           567      
+000034E2                           568  BSCHHELP:
+000034E2  48E7 8040                569      MOVEM.L D0/A1, -(SP)
+000034E6  43F8 23E7                570      LEA BSCHHELPPROMPT, A1
+000034EA  103C 000D                571      MOVE.B #13,D0
+000034EE  4E4F                     572      TRAP #15
+000034F0  4CDF 0201                573      MOVEM.L (SP)+, D0/A1
+000034F4  4E75                     574      RTS
+000034F6                           575  
+000034F6                           576  GOHELP:
+000034F6  48E7 8040                577      MOVEM.L D0/A1, -(SP)
+000034FA  43F8 2455                578      LEA GOHELPPROMPT, A1
+000034FE  103C 000D                579      MOVE.B #13,D0
+00003502  4E4F                     580      TRAP #15
+00003504  4CDF 0201                581      MOVEM.L (SP)+, D0/A1
+00003508  4E75                     582      RTS
+0000350A                           583      
+0000350A                           584  FONTHELP:
+0000350A  48E7 8040                585      MOVEM.L D0/A1, -(SP)
+0000350E  43F8 24B0                586      LEA FONTHELPROMPT, A1
+00003512  103C 000D                587      MOVE.B #13,D0
+00003516  4E4F                     588      TRAP #15
+00003518  4CDF 0201                589      MOVEM.L (SP)+, D0/A1
+0000351C  4E75                     590      RTS
+0000351E                           591      
+0000351E                           592  ECHOHELP:
+0000351E  48E7 8040                593      MOVEM.L D0/A1, -(SP)
+00003522  43F8 2526                594      LEA ECHOHELPPROMPT, A1
+00003526  103C 000D                595      MOVE.B #13,D0
+0000352A  4E4F                     596      TRAP #15
+0000352C  4CDF 0201                597      MOVEM.L (SP)+, D0/A1
+00003530  4E75                     598      RTS
+00003532                           599  
+00003532                           600  
+00003532                           601  ALL_HELP_PROMPTS:
+00003532  6100 FF36                602      BSR MMHELP
+00003536  6100 FF5A                603      BSR SORTWHELP
+0000353A  6100 FF6A                604      BSR MDSPHELP
+0000353E  6100 FF3E                605      BSR MSHELP
+00003542  6100 FF76                606      BSR BFHELP
+00003546  6186                     607      BSR BMOVHELP
+00003548  6198                     608      BSR BSCHHELP
+0000354A  61AA                     609      BSR GOHELP
+0000354C  61BC                     610      BSR FONTHELP
+0000354E  61CE                     611      BSR ECHOHELP
+00003550  48E7 8040                612      MOVEM.L D0/A1, -(SP)
+00003554  43F8 248F                613      LEA DFHELPPROMPT, A1
+00003558  103C 000D                614      MOVE.B #13,D0
+0000355C  4E4F                     615      TRAP #15
+0000355E  4CDF 0201                616      MOVEM.L (SP)+, D0/A1
+00003562  4E75                     617      RTS
+00003564                           618      
+00003564                           619  *Finds end of string. Either char is a 0 or it's empty COLON
+00003564                           620  FIND_END:    
+00003564  0C16 0000                621      CMP.B #0,(A6)   ; check if we are at end
+00003568  6700 000E                622      BEQ END_FOUND
+0000356C  0C16 0020                623      CMP.B #' ',(A6) ; check if we are at end
+00003570  6700 0006                624      BEQ END_FOUND
+00003574  528E                     625      ADDA.L #1,A6    ; keep searching 
+00003576  60EC                     626      BRA FIND_END
+00003578                           627      
+00003578                           628  END_FOUND:
+00003578  4E75                     629      RTS
+0000357A                           630      
+0000357A                           631   *compare strings
+0000357A                           632  CHECK_MATCH:     
+0000357A  48E7 0006                633      MOVEM.L A5/A6, -(SP) ;strings are in A5 and A6
+0000357E  4A40                     634      TST D0          ; length of input string is in D0.
+00003580  6700 001A                635      BEQ NO_MATCH     ; if string length is 0 they're not equal
+00003584  5380                     636      SUB.L #1,D0
+00003586                           637  FOR_C_IN_STRING:
+00003586  BD0D                     638      CMP.B (A5)+,(A6)+   ; compare characters byte by byte
+00003588  6600 0012                639      BNE NO_MATCH        ; byte not equal? string is not equal
+0000358C  4A40                     640      TST.W D0            ; compared all the characters in the string?
+0000358E  57C8 FFF6                641      DBEQ.W D0,FOR_C_IN_STRING    ;  DO AT MOST D0 COMPARISONS
+00003592  6000 0002                642      BRA MATCH            ; finshed comparing and strings are equal.
+00003596                           643      
+00003596                           644  MATCH:
+00003596  4CDF 6000                645      MOVEM.L (SP)+, A5/A6  ;D0 will = 0, signifying a match
+0000359A  4E75                     646      RTS
+0000359C                           647  NO_MATCH:
+0000359C  7001                     648      MOVE.L #1,D0        ; return 1 to signify no match
+0000359E  4CDF 6000                649      MOVEM.L (SP)+, A5/A6
+000035A2  4E75                     650      RTS
+000035A4                           651      
+000035A4                           652  
+000035A4                           653  TRAPING_HOES:
+000035A4  5C8F                     654      ADD.L #6,SP        
+000035A6  4CDF FFFF                655      MOVEM.L (A7)+,A0-A7/D0-D7
+000035AA  4E75                     656      RTS
+000035AC                           657      
+000035AC                           658      
+000035AC                           659  ADDRESS_ERRORV:
+000035AC  48E7 E040                660      MOVEM.L A1/D0-D2, -(SP)
+000035B0  700E                     661      MOVE.L #14,D0
+000035B2  43F8 25D4                662      LEA ADDRESS_ER,A1  ;print ADDRESS:
+000035B6  4E4F                     663      TRAP #15
+000035B8                           664      
+000035B8  143C 0010                665      MOVE.B #16,D2
+000035BC  700D                     666      MOVE.L #13,D0
+000035BE  43F8 2572                667      LEA NL,A1
+000035C2  4E4F                     668      TRAP #15
+000035C4  21EF 001A 26C2           669      MOVE.L (26,A7),PC_STORE
+000035CA  31EF 0018 26C8           670      MOVE.W (24,A7),REG_STORE   ; get SR
+000035D0  4CDF 0207                671      MOVEM.L (SP)+, A1/D0-D2
+000035D4  6100 039A                672      BSR DF  ; Use Display registers to print out registers and content 
+000035D8  DFFC 0000000E            673      ADD.L #14,SP     
+000035DE  4EF8 3048                674      JMP SHELL
+000035E2                           675  
+000035E2                           676  ILLEGAL_INSTRV:
+000035E2  48E7 8040                677      MOVEM.L A1/D0, -(SP)
+000035E6  700D                     678      MOVE.L #13,D0
+000035E8  43F8 25E8                679      LEA ILLEGAL_ER,A1   ; print iilegal instruction erorr
+000035EC  4E4F                     680      TRAP #15
+000035EE  4CDF 0201                681      MOVEM.L (SP)+, A1/D0
+000035F2  31D7 26C8                682      MOVE.W (A7),REG_STORE   ; put sr in regstore
+000035F6  21EF 0002 26C2           683      MOVE.L (2,A7),PC_STORE
+000035FC  6100 0372                684      BSR DF          
+00003600  5C8F                     685      ADD.L #6,SP     
+00003602  4EF8 3048                686      JMP SHELL
+00003606                           687      
+00003606                           688  PRIVALEGEV:
+00003606  48E7 8040                689      MOVEM.L A1/D0, -(SP)
+0000360A  700D                     690      MOVE.L #13,D0
+0000360C  43F8 2607                691      LEA PRIVALAGE_ER,A1
+00003610  4E4F                     692      TRAP #15
+00003612  4CDF 0201                693      MOVEM.L (SP)+, A1/D0
+00003616  31D7 26C8                694      MOVE.W (A7),REG_STORE   
+0000361A  21EF 0002 26C2           695      MOVE.L (2,A7),PC_STORE
+00003620  6100 034E                696      BSR DF          
+00003624  5C8F                     697      ADD.L #6,SP     
+00003626  4EF8 3048                698      JMP SHELL
+0000362A                           699  
+0000362A                           700  DIVIDE_ZEROV:
+0000362A  48E7 8040                701      MOVEM.L A1/D0, -(SP)
+0000362E  700D                     702      MOVE.L #13,D0
+00003630  43F8 2625                703      LEA DIVIDE_Z_ER,A1
+00003634  4E4F                     704      TRAP #15
+00003636  4CDF 0201                705      MOVEM.L (SP)+, A1/D0
+0000363A  31D7 26C8                706      MOVE.W (A7),REG_STORE   
+0000363E  21EF 0002 26C2           707      MOVE.L (2,A7),PC_STORE
+00003644  6100 032A                708      BSR DF          
+00003648  5C8F                     709      ADD.L #6,SP     
+0000364A  4EF8 3048                710      JMP SHELL
+0000364E                           711      
+0000364E                           712  CHECK_INSTRV:
+0000364E  48E7 8040                713      MOVEM.L A1/D0, -(SP)
+00003652  700D                     714      MOVE.L #13,D0
+00003654  43F8 2637                715      LEA CHECK_ER,A1
+00003658  4E4F                     716      TRAP #15
+0000365A  4CDF 0201                717      MOVEM.L (SP)+, A1/D0
+0000365E  31D7 26C8                718      MOVE.W (A7),REG_STORE   
+00003662  21EF 0002 26C2           719      MOVE.L (2,A7),PC_STORE
+00003668  6100 0306                720      BSR DF          
+0000366C  5C8F                     721      ADD.L #6,SP     
+0000366E  4EF8 3048                722      JMP SHELL
+00003672                           723    
+00003672                           724  LINEAV:
+00003672  48E7 8040                725      MOVEM.L A1/D0, -(SP)
+00003676  700D                     726      MOVE.L #13,D0
+00003678  43F8 264F                727      LEA LINEA_ER,A1
+0000367C  4E4F                     728      TRAP #15
+0000367E  4CDF 0201                729      MOVEM.L (SP)+, A1/D0
+00003682  31D7 26C8                730      MOVE.W (A7),REG_STORE   
+00003686  21EF 0002 26C2           731      MOVE.L (2,A7),PC_STORE
+0000368C  6100 02E2                732      BSR DF          
+00003690  5C8F                     733      ADD.L #6,SP     
+00003692  4EF8 3048                734      JMP SHELL
+00003696                           735      
+00003696                           736  LINEFV:
+00003696  48E7 8040                737      MOVEM.L A1/D0, -(SP)
+0000369A  700D                     738      MOVE.L #13,D0
+0000369C  43F8 2669                739      LEA LINEF_ER,A1
+000036A0  4E4F                     740      TRAP #15
+000036A2  4CDF 0201                741      MOVEM.L (SP)+, A1/D0
+000036A6  31D7 26C8                742      MOVE.W (A7),REG_STORE   
+000036AA  21EF 0002 26C2           743      MOVE.L (2,A7),PC_STORE
+000036B0  6100 02BE                744      BSR DF          
+000036B4  5C8F                     745      ADD.L #6,SP     
+000036B6  4EF8 3048                746      JMP SHELL
+000036BA                           747  
+000036BA                           748      
+000036BA                           749      
+000036BA                           750  * Parses arguments for a valid command.
+000036BA                           751  COMMAND_PARSE:            
+000036BA  48E7 3F46                752      MOVEM.L A1/A5/A6/D2-D7, -(SP)  
+000036BE  4280                     753      CLR.L D0
+000036C0  4281                     754      CLR.L D1
+000036C2  7400                     755      MOVE.L #0, D2   
+000036C4  0C1D 0024                756      CMP.B #$24,(A5)+ ;checking for $
+000036C8  6600 0056                757      BNE PARSE_ERR
+000036CC  224E                     758      MOVE.L A6,A1
+000036CE  93CD                     759      SUB.L A5,A1
+000036D0  B3FC 00000008            760      CMP.L #8,A1
+000036D6  6E00 0048                761      BGT PARSE_ERR
+000036DA                           762      
+000036DA                           763  FOR_PARSE:
+000036DA  BCCD                     764      CMP A5,A6       ; check if eat ennd of command
+000036DC  6F00 0044                765      BLE PARSE_DONE
+000036E0  4283                     766      CLR.L D3        ; use D3 to check
+000036E2  1626                     767      MOVE.B -(A6),D3
+000036E4  B63C 0046                768      CMP.B #'F',D3   ; bigger than 16 Hex?
+000036E8  6E00 0036                769      BGT PARSE_ERR
+000036EC  B63C 0030                770      CMP.B #'0',D3   ; negative
+000036F0  6D00 002E                771      BLT PARSE_ERR
+000036F4  B63C 0039                772      CMP.B #'9',D3
+000036F8  6F00 000E                773      BLE NUM_CHECK   ; WITHIN 0-9 OR A-F?
+000036FC  B63C 0041                774      CMP.B #'A',D3
+00003700  6C00 0012                775      BGE HEX_CHECK
+00003704  6000 001A                776      BRA PARSE_ERR
+00003708                           777      
+00003708                           778  NUM_CHECK:
+00003708  0403 0030                779      SUBI.B #$30,D3  
+0000370C  E5AB                     780      LSL.L D2,D3
+0000370E  8083                     781      OR.L D3,D0
+00003710  5802                     782      ADD.B #4,D2    
+00003712  60C6                     783      BRA FOR_PARSE
+00003714                           784      
+00003714                           785  HEX_CHECK:
+00003714  0403 0037                786      SUBI.B #55,D3 
+00003718  E5AB                     787      LSL.L D2,D3
+0000371A  8083                     788      OR.L D3,D0
+0000371C  5802                     789      ADD.B #4,D2     
+0000371E  60BA                     790      BRA FOR_PARSE
+00003720                           791    
+00003720                           792  PARSE_ERR:
+00003720  5201                     793      ADDI.B #1,D1    
+00003722                           794  PARSE_DONE:
+00003722  4CDF 62FC                795      MOVEM.L (SP)+, A1/A5/A6/D2-D7
+00003726  4E75                     796      RTS
+00003728                           797      
+00003728                           798  MDSP:                    
+00003728  48E7 FFFE                799      MOVEM.L A0-A6/D0-D7,-(SP)
+0000372C  BDFC 00000000            800      CMP.L #0, A6
+00003732  6600 0008                801      BNE MD
+00003736  DDFC 00000010            802      ADD.L #16, A6   ; if A6=0 add 16 to get the end address.
+0000373C                           803  MD:
+0000373C  143C 0010                804      MOVE.B #16,D2   ; base of number to display for trap function
+00003740  43F8 26B5                805      LEA ADDRESS,A1  ; ADDRESS prompt to print
+00003744  103C 000E                806      MOVE.B #14,D0
+00003748  4E4F                     807      TRAP #15        ;Display the NULL terminated string pointed to by (A1).
+0000374A  220D                     808      MOVE.L A5,D1
+0000374C  103C 000F                809      MOVE.B #15,D0   ;Display the unsigned number in D1.L converted to number base (2 through 36) contained in D2.B. 
+00003750  4E4F                     810      TRAP #15        
+00003752  43F8 26BE                811      LEA COLON,A1    ; put a COLON
+00003756  103C 000E                812      MOVE.B #14,D0
+0000375A  4E4F                     813      TRAP #15        ; 
+0000375C  4281                     814      CLR.L D1
+0000375E  121D                     815      MOVE.B (A5)+,D1 ; move contents pointed to by A5 to D1 to display 
+00003760  103C 000F                816      MOVE.B #15,D0
+00003764  4E4F                     817      TRAP #15        ; display D1 contents (data)
+00003766  43F8 2572                818      LEA NL,A1
+0000376A  103C 000D                819      MOVE.B #13,D0
+0000376E  4E4F                     820      TRAP #15        ; print empty space for new input
+00003770  BCCD                     821      CMP A5,A6       ; are we at address2?
+00003772  6CC8                     822      BGE MD          ; keep going if we're not
+00003774  4CDF 7FFF                823      MOVEM.L (SP)+,A0-A6/D0-D7
+00003778  4E75                     824      RTS
+0000377A                           825  
+0000377A                           826      
+0000377A                           827  MM:        
+0000377A  48E7 FFFE                828      MOVEM.L A0-A6/D0-D7,-(SP)
+0000377E  BE7C 0001                829      CMP #1, D7
+00003782  6700 007A                830      BEQ MM_WORD
+00003786  BE7C 0002                831      CMP #2, D7
+0000378A  6700 00E2                832      BEQ MM_LONG
+0000378E                           833      
+0000378E                           834  MM_BYTE:        
+0000378E  5388                     835      SUBA.L #1, A0    
+00003790                           836  BLOOP:    
+00003790  143C 0010                837      MOVE.B #16,D2   
+00003794  5248                     838      ADDA #1, A0     ; increment to the next Bbyte 
+00003796  43F8 26B5                839      LEA ADDRESS,A1  
+0000379A  103C 000E                840      MOVE.B #14,D0   ; address
+0000379E  4E4F                     841      TRAP #15
+000037A0  2208                     842      MOVE.L A0,D1
+000037A2  103C 000F                843      MOVE.B #15,D0   
+000037A6  4E4F                     844      TRAP #15
+000037A8  43F8 26BE                845      LEA COLON,A1
+000037AC  103C 000E                846      MOVE.B #14,D0
+000037B0  4E4F                     847      TRAP #15
+000037B2  4281                     848      CLR.L D1
+000037B4  1210                     849      MOVE.B (A0),D1  ; moving data to D1
+000037B6  103C 000F                850      MOVE.B #15,D0   ; printing data
+000037BA  4E4F                     851      TRAP #15        
+000037BC  43F8 26BE                852      LEA COLON,A1
+000037C0  103C 000E                853      MOVE.B #14,D0   
+000037C4  4E4F                     854      TRAP #15
+000037C6  43F8 200C                855      LEA INPUT,A1
+000037CA  103C 0002                856      MOVE.B #2,D0    ; waiting for user input
+000037CE  4E4F                     857      TRAP #15
+000037D0  B27C 0000                858      CMP.W #0,D1     ; if enter was hit, and not input. Restart
+000037D4  67BA                     859      BEQ BLOOP
+000037D6  0C11 002E                860      CMP.B #$2E,(A1)   ; if we get a period, finish.
+000037DA  6700 0106                861      BEQ MM_EXIT
+000037DE  B27C 0003                862      CMP.W #3,D1          
+000037E2  6600 00FA                863      BNE MMERR       ; print an error if we get incorret number of charcters
+000037E6  4BF8 200C                864      LEA INPUT,A5
+000037EA  4DF8 200C                865      LEA INPUT,A6
+000037EE  DCC1                     866      ADDA D1,A6
+000037F0  6100 FEC8                867      BSR COMMAND_PARSE
+000037F4  4A41                     868      TST D1
+000037F6  6600 00E6                869      BNE MMERR       
+000037FA  1080                     870      MOVE.B D0,(A0)  
+000037FC  6092                     871      BRA BLOOP
+000037FE                           872      
+000037FE                           873  MM_WORD:           
+000037FE  5588                     874      SUBA.L #2, A0    
+00003800                           875  MMWLOOP:    
+00003800  143C 0010                876      MOVE.B #16,D2   ; setting base number to print from
+00003804  5448                     877      ADDA #2, A0     ; increment to the next wORD
+00003806  43F8 26B5                878      LEA ADDRESS,A1  
+0000380A  103C 000E                879      MOVE.B #14,D0   
+0000380E  4E4F                     880      TRAP #15
+00003810  2208                     881      MOVE.L A0,D1
+00003812  103C 000F                882      MOVE.B #15,D0   
+00003816  4E4F                     883      TRAP #15        ; print address
+00003818  43F8 26BE                884      LEA COLON,A1    
+0000381C  103C 000E                885      MOVE.B #14,D0
+00003820  4E4F                     886      TRAP #15
+00003822  4281                     887      CLR.L D1
+00003824  3210                     888      MOVE.W (A0),D1  ; moving data pointed to by A1 to D1 for printing
+00003826  103C 000F                889      MOVE.B #15,D0
+0000382A  4E4F                     890      TRAP #15        ; print current data at this address
+0000382C  43F8 26BE                891      LEA COLON,A1
+00003830  103C 000E                892      MOVE.B #14,D0   
+00003834  4E4F                     893      TRAP #15
+00003836  43F8 200C                894      LEA INPUT,A1
+0000383A  103C 0002                895      MOVE.B #2,D0    ; wait for input from user
+0000383E  4E4F                     896      TRAP #15
+00003840  B27C 0000                897      CMP.W #0,D1     ; if enter was hit, and not input. Restart
+00003844  67BA                     898      BEQ MMWLOOP
+00003846  0C11 002E                899      CMP.B #$2E,(A1)   ; if we get a period, finish
+0000384A  6700 0096                900      BEQ MM_EXIT
+0000384E  B27C 0005                901      CMP.W #5,D1       ; 4 character comparison   
+00003852  6600 008A                902      BNE MMERR
+00003856  4BF8 200C                903      LEA INPUT,A5
+0000385A  4DF8 200C                904      LEA INPUT,A6
+0000385E  DCC1                     905      ADDA D1,A6
+00003860  6100 FE58                906      BSR COMMAND_PARSE
+00003864  4A41                     907      TST D1
+00003866  6600 0076                908      BNE MMERR      
+0000386A  3080                     909      MOVE.W D0,(A0)  ; Move data
+0000386C  6092                     910      BRA MMWLOOP
+0000386E                           911  
+0000386E                           912  MM_LONG:             ;BYTE SIZE MM
+0000386E  5988                     913      SUBA.L #4, A0     ; SUBTRACT JUST THE FIRST TIME
+00003870                           914  MMLLOOP:    
+00003870  143C 0010                915      MOVE.B #16,D2   
+00003874  5848                     916      ADDA #4, A0     
+00003876  43F8 26B5                917      LEA ADDRESS,A1  
+0000387A  103C 000E                918      MOVE.B #14,D0   
+0000387E  4E4F                     919      TRAP #15
+00003880  2208                     920      MOVE.L A0,D1
+00003882  103C 000F                921      MOVE.B #15,D0   
+00003886  4E4F                     922      TRAP #15
+00003888  43F8 26BE                923      LEA COLON,A1    
+0000388C  103C 000E                924      MOVE.B #14,D0
+00003890  4E4F                     925      TRAP #15
+00003892  4281                     926      CLR.L D1
+00003894  2210                     927      MOVE.L (A0),D1  
+00003896  103C 000F                928      MOVE.B #15,D0
+0000389A  4E4F                     929      TRAP #15        
+0000389C  43F8 26BE                930      LEA COLON,A1
+000038A0  103C 000E                931      MOVE.B #14,D0   
+000038A4  4E4F                     932      TRAP #15
+000038A6  43F8 200C                933      LEA INPUT,A1
+000038AA  103C 0002                934      MOVE.B #2,D0    
+000038AE  4E4F                     935      TRAP #15
+000038B0  B27C 0000                936      CMP.W #0,D1     
+000038B4  67BA                     937      BEQ MMLLOOP
+000038B6  0C11 002E                938      CMP.B #$2E,(A1)   
+000038BA  6700 0026                939      BEQ MM_EXIT
+000038BE  B27C 0009                940      CMP.W #9,D1         
+000038C2  6600 001A                941      BNE MMERR
+000038C6  4BF8 200C                942      LEA INPUT,A5
+000038CA  4DF8 200C                943      LEA INPUT,A6
+000038CE  DCC1                     944      ADDA D1,A6
+000038D0  6100 FDE8                945      BSR COMMAND_PARSE
+000038D4  4A41                     946      TST D1
+000038D6  6600 0006                947      BNE MMERR       
+000038DA  2080                     948      MOVE.L D0,(A0)  
+000038DC  6092                     949      BRA MMLLOOP
+000038DE                           950  
+000038DE                           951  MMERR:
+000038DE  6100 FB8A                952     BSR MMHELP
+000038E2                           953  MM_EXIT:
+000038E2  4CDF 7FFF                954     MOVEM.L (SP)+, A0-A6/D0-D7
+000038E6  4E75                     955     RTS
+000038E8                           956  
+000038E8                           957  
+000038E8                           958  BMOV:                      
+000038E8  48E7 8006                959     MOVEM.L A5/A6/D0,-(SP)
+000038EC  5380                     960     SUBI.L #1,D0        ; D0 has count of data to move
+000038EE                           961  BMOV_LOOP:  
+000038EE  1CDD                     962     MOVE.B (A5)+,(A6)+  ; move contents from location in A5 to A6
+000038F0  57C8 FFFC                963     DBEQ D0,BMOV_LOOP
+000038F4  6000 0002                964     BRA BMOV_EXIT
+000038F8                           965           
+000038F8                           966  BMOV_EXIT:         
+000038F8  4CDF 6001                967     MOVEM.L (SP)+,A5/A6/D0
+000038FC  4E75                     968     RTS   
+000038FE                           969          
+000038FE                           970  
+000038FE                           971      
+000038FE                           972  BF:                      
+000038FE  48E7 0004                973     MOVEM.L A5,-(SP)
+00003902                           974  BF_LOOP:  
+00003902  3AC0                     975     MOVE.W D0,(A5)+  ; fill memory location with data in D0
+00003904  BCCD                     976     CMP A5,A6        ; keep going until we hit address2
+00003906  6EFA                     977     BGT BF_LOOP
+00003908  4CDF 2000                978     MOVEM.L (SP)+,A5
+0000390C  4E75                     979     RTS
+0000390E                           980           
+0000390E                           981  
+0000390E                           982    
+0000390E                           983             
+0000390E                           984  GO:                     
+0000390E  48E7 E040                985     MOVEM.L A1/D0-D2, -(SP) 
+00003912  43F8 2683                986     LEA GO_ADDRESS,A1       ; print address
+00003916  103C 000E                987     MOVE.B #14,D0
+0000391A  4E4F                     988     TRAP #15
+0000391C  103C 000F                989     MOVE.B #15,D0
+00003920  2238 26C8                990     MOVE.L REG_STORE,D1
+00003924  143C 0010                991     MOVE.B #16,D2      ;convert to ascii
+00003928  4E4F                     992     TRAP #15
+0000392A  43F8 2572                993     LEA NL,A1
+0000392E  103C 000D                994     MOVE.B #13,D0
+00003932  4E4F                     995     TRAP #15
+00003934  4CDF 0207                996     MOVEM.L (SP)+, A1/D0-D2
+00003938  2F38 26C8                997     MOVE.L REG_STORE, -(SP) 
+0000393C  4E75                     998     RTS                ; be able to retunrn after
+0000393E                           999            
+0000393E                          1000  
+0000393E                          1001  *sorting algorithm. DO holds value for ascending or descending         
+0000393E                          1002  SORTW:
+0000393E  48E7 4026               1003     MOVEM.L A2/A5-A6/D1, -(SP)
+00003942  244D                    1004     MOVE.L A5,A2         ; address1
+00003944                          1005     
+00003944                          1006  ** for i in range(1,n):
+00003944                          1007  **      for j in range():
+00003944                          1008  SORTW_FOR_I:
+00003944  2A4A                    1009     MOVE.L A2,A5
+00003946                          1010  SORTW_FOR_J:
+00003946  4A00                    1011     TST.B D0             ;check for order first
+00003948  6700 000A               1012     BEQ DESC             
+0000394C  BB4D                    1013     CMP.W (A5)+,(A5)+    ; start compare of elements
+0000394E  6212                    1014     BHI.S SWAP           ; if the value is higher, branch to swap elements       
+00003950  6000 0006               1015     BRA SORTW_NEXT
+00003954                          1016  DESC:
+00003954  BB4D                    1017     CMP.W (A5)+,(A5)+    ; Compare current and next elements
+00003956  650A                    1018     BLO.S SWAP          
+00003958                          1019  SORTW_NEXT:
+00003958  558D                    1020     SUBQ.L #2,A5         
+0000395A  BDCD                    1021     CMP.L A5,A6
+0000395C  66E8                    1022     BNE SORTW_FOR_J            ; Did we reach end of string? keep going if no
+0000395E  6000 000A               1023     BRA SORTW_EXIT
+00003962                          1024  SWAP:
+00003962  2225                    1025     MOVE.L -(A5),D1      ; get back to start of comaparison and put the two values in D1. eg. D1=11112222
+00003964  4841                    1026     SWAP.W D1            ; swap the word val. D1=22221111
+00003966  2A81                    1027     MOVE.L D1,(A5)       ; move the values back into memory
+00003968  60DA                    1028     BRA SORTW_FOR_I      ; restart for loop after a swap
+0000396A                          1029     
+0000396A                          1030  SORTW_EXIT:  
+0000396A  4CDF 6402               1031     MOVEM.L (SP)+, A2/A5-A6/D1
+0000396E  4E75                    1032     RTS
+00003970                          1033     
+00003970                          1034     
+00003970                          1035  DF: 
+00003970                          1036                         
+00003970  48E7 FFFF               1037      MOVEM.L A0-A7/D0-D7,-(A7)
+00003974  204F                    1038      MOVE.L A7,A0
+00003976                          1039      
+00003976                          1040      *DO*
+00003976  43F8 259C               1041      LEA D0REG, A1
+0000397A  143C 0010               1042      MOVE.B #16,D2
+0000397E  103C 000E               1043      MOVE.B #14, D0
+00003982  4E4F                    1044      TRAP #15
+00003984  2210                    1045      MOVE.L (A0),D1
+00003986  103C 000F               1046      MOVE.B #15, D0
+0000398A  4E4F                    1047      TRAP #15
+0000398C  103C 000D               1048      MOVE.B #13, D0
+00003990  43F8 2572               1049      LEA NL,A1
+00003994  4E4F                    1050      TRAP #15
+00003996                          1051  
+00003996                          1052      *D1*
+00003996  43F8 25A1               1053      LEA D1REG, A1
+0000399A  143C 0010               1054      MOVE.B #16,D2
+0000399E  103C 000E               1055      MOVE.B #14, D0 
+000039A2  4E4F                    1056      TRAP #15
+000039A4  2228 0004               1057      MOVE.L (4,A0),D1
+000039A8  103C 000F               1058      MOVE.B #15, D0
+000039AC  4E4F                    1059      TRAP #15
+000039AE  103C 000D               1060      MOVE.B #13, D0
+000039B2  43F8 2572               1061      LEA NL,A1
+000039B6  4E4F                    1062      TRAP #15
+000039B8                          1063  
+000039B8                          1064      
+000039B8                          1065      *D2*
+000039B8  43F8 25A6               1066      LEA D2REG, A1
+000039BC  143C 0010               1067      MOVE.B #16,D2
+000039C0  103C 000E               1068      MOVE.B #14, D0 
+000039C4  4E4F                    1069      TRAP #15
+000039C6  2228 0008               1070      MOVE.L (8,A0),D1
+000039CA  103C 000F               1071      MOVE.B #15, D0
+000039CE  4E4F                    1072      TRAP #15
+000039D0  103C 000D               1073      MOVE.B #13, D0
+000039D4  43F8 2572               1074      LEA NL,A1
+000039D8  4E4F                    1075      TRAP #15
+000039DA                          1076  
+000039DA                          1077  
+000039DA                          1078      *D3*
+000039DA  43F8 25AB               1079      LEA D3REG, A1
+000039DE  143C 0010               1080      MOVE.B #16,D2
+000039E2  103C 000E               1081      MOVE.B #14, D0 
+000039E6  4E4F                    1082      TRAP #15
+000039E8  2228 000C               1083      MOVE.L (12,A0),D1
+000039EC  103C 000F               1084      MOVE.B #15, D0
+000039F0  4E4F                    1085      TRAP #15
+000039F2  103C 000D               1086      MOVE.B #13, D0
+000039F6  43F8 2572               1087      LEA NL,A1
+000039FA  4E4F                    1088      TRAP #15
+000039FC                          1089      
+000039FC                          1090      *D4*
+000039FC  43F8 25B0               1091      LEA D4REG, A1
+00003A00  143C 0010               1092      MOVE.B #16,D2
+00003A04  103C 000E               1093      MOVE.B #14, D0 
+00003A08  4E4F                    1094      TRAP #15
+00003A0A  2228 0010               1095      MOVE.L (16,A0),D1
+00003A0E  103C 000F               1096      MOVE.B #15, D0
+00003A12  4E4F                    1097      TRAP #15
+00003A14  103C 000D               1098      MOVE.B #13, D0
+00003A18  43F8 2572               1099      LEA NL,A1
+00003A1C  4E4F                    1100      TRAP #15
+00003A1E                          1101      
+00003A1E                          1102      *D5*
+00003A1E  43F8 25B5               1103      LEA D5REG, A1
+00003A22  143C 0010               1104      MOVE.B #16,D2
+00003A26  103C 000E               1105      MOVE.B #14, D0 
+00003A2A  4E4F                    1106      TRAP #15
+00003A2C  2228 0014               1107      MOVE.L (20,A0),D1
+00003A30  103C 000F               1108      MOVE.B #15, D0
+00003A34  4E4F                    1109      TRAP #15
+00003A36  103C 000D               1110      MOVE.B #13, D0
+00003A3A  43F8 2572               1111      LEA NL,A1
+00003A3E  4E4F                    1112      TRAP #15
+00003A40                          1113      
+00003A40                          1114      *D6*
+00003A40  43F8 25BA               1115      LEA D6REG, A1
+00003A44  143C 0010               1116      MOVE.B #16,D2
+00003A48  103C 000E               1117      MOVE.B #14, D0 
+00003A4C  4E4F                    1118      TRAP #15
+00003A4E  2228 0018               1119      MOVE.L (24,A0),D1
+00003A52  103C 000F               1120      MOVE.B #15, D0
+00003A56  4E4F                    1121      TRAP #15
+00003A58  103C 000D               1122      MOVE.B #13, D0
+00003A5C  43F8 2572               1123      LEA NL,A1
+00003A60  4E4F                    1124      TRAP #15
+00003A62                          1125      
+00003A62                          1126      *D7*
+00003A62  43F8 25BF               1127      LEA D7REG, A1
+00003A66  143C 0010               1128      MOVE.B #16,D2
+00003A6A  103C 000E               1129      MOVE.B #14, D0 
+00003A6E  4E4F                    1130      TRAP #15
+00003A70  2228 001C               1131      MOVE.L (28,A0),D1
+00003A74  103C 000F               1132      MOVE.B #15, D0
+00003A78  4E4F                    1133      TRAP #15
+00003A7A  103C 000D               1134      MOVE.B #13, D0
+00003A7E  43F8 2572               1135      LEA NL,A1
+00003A82  4E4F                    1136      TRAP #15
+00003A84                          1137      
+00003A84                          1138      *A0*
+00003A84  43F8 2573               1139      LEA A0REG, A1
+00003A88  143C 0010               1140      MOVE.B #16,D2
+00003A8C  103C 000E               1141      MOVE.B #14, D0 
+00003A90  4E4F                    1142      TRAP #15
+00003A92  2228 0020               1143      MOVE.L (32,A0),D1
+00003A96  103C 000F               1144      MOVE.B #15, D0
+00003A9A  4E4F                    1145      TRAP #15
+00003A9C  103C 000D               1146      MOVE.B #13, D0
+00003AA0  43F8 2572               1147      LEA NL,A1
+00003AA4  4E4F                    1148      TRAP #15
+00003AA6                          1149      
+00003AA6                          1150      *A1*
+00003AA6  43F8 2578               1151      LEA A1REG, A1
+00003AAA  143C 0010               1152      MOVE.B #16,D2
+00003AAE  103C 000E               1153      MOVE.B #14, D0 
+00003AB2  4E4F                    1154      TRAP #15
+00003AB4  2228 0024               1155      MOVE.L (36,A0),D1
+00003AB8  103C 000F               1156      MOVE.B #15, D0
+00003ABC  4E4F                    1157      TRAP #15
+00003ABE  103C 000D               1158      MOVE.B #13, D0
+00003AC2  43F8 2572               1159      LEA NL,A1
+00003AC6  4E4F                    1160      TRAP #15
+00003AC8                          1161      
+00003AC8                          1162      *A2*
+00003AC8  43F8 257C               1163      LEA A2REG, A1
+00003ACC  143C 0010               1164      MOVE.B #16,D2
+00003AD0  103C 000E               1165      MOVE.B #14, D0 
+00003AD4  4E4F                    1166      TRAP #15
+00003AD6  2228 0028               1167      MOVE.L (40,A0),D1
+00003ADA  103C 000F               1168      MOVE.B #15, D0
+00003ADE  4E4F                    1169      TRAP #15
+00003AE0  103C 000D               1170      MOVE.B #13, D0
+00003AE4  43F8 2572               1171      LEA NL,A1
+00003AE8  4E4F                    1172      TRAP #15
+00003AEA                          1173      
+00003AEA                          1174      *A3*
+00003AEA  43F8 2581               1175      LEA A3REG, A1
+00003AEE  143C 0010               1176      MOVE.B #16,D2
+00003AF2  103C 000E               1177      MOVE.B #14, D0 
+00003AF6  4E4F                    1178      TRAP #15
+00003AF8  2228 002C               1179      MOVE.L (44,A0),D1
+00003AFC  103C 000F               1180      MOVE.B #15, D0
+00003B00  4E4F                    1181      TRAP #15
+00003B02  103C 000D               1182      MOVE.B #13, D0
+00003B06  43F8 2572               1183      LEA NL,A1
+00003B0A  4E4F                    1184      TRAP #15
+00003B0C                          1185      
+00003B0C                          1186      *A4*
+00003B0C  43F8 2586               1187      LEA A4REG, A1
+00003B10  143C 0010               1188      MOVE.B #16,D2
+00003B14  103C 000E               1189      MOVE.B #14, D0 
+00003B18  4E4F                    1190      TRAP #15
+00003B1A  2228 0030               1191      MOVE.L (48,A0),D1
+00003B1E  103C 000F               1192      MOVE.B #15, D0
+00003B22  4E4F                    1193      TRAP #15
+00003B24  103C 000D               1194      MOVE.B #13, D0
+00003B28  43F8 2572               1195      LEA NL,A1
+00003B2C  4E4F                    1196      TRAP #15
+00003B2E                          1197  
+00003B2E                          1198      *A5*
+00003B2E  43F8 258B               1199      LEA A5REG, A1
+00003B32  143C 0010               1200      MOVE.B #16,D2
+00003B36  103C 000E               1201      MOVE.B #14, D0
+00003B3A  4E4F                    1202      TRAP #15
+00003B3C  2228 0034               1203      MOVE.L (52,A0),D1
+00003B40  103C 000F               1204      MOVE.B #15, D0
+00003B44  4E4F                    1205      TRAP #15
+00003B46  103C 000D               1206      MOVE.B #13, D0
+00003B4A  43F8 2572               1207      LEA NL,A1
+00003B4E  4E4F                    1208      TRAP #15
+00003B50                          1209      
+00003B50                          1210      *A6*
+00003B50  43F8 2590               1211      LEA A6REG, A1
+00003B54  143C 0010               1212      MOVE.B #16,D2
+00003B58  103C 000E               1213      MOVE.B #14, D0 
+00003B5C  4E4F                    1214      TRAP #15
+00003B5E  2228 0038               1215      MOVE.L (56,A0),D1
+00003B62  103C 000F               1216      MOVE.B #15, D0
+00003B66  4E4F                    1217      TRAP #15
+00003B68  103C 000D               1218      MOVE.B #13, D0
+00003B6C  43F8 2572               1219      LEA NL,A1
+00003B70  4E4F                    1220      TRAP #15
+00003B72                          1221  
+00003B72                          1222      *A7*
+00003B72  43F8 2594               1223      LEA A7REG, A1
+00003B76  143C 0010               1224      MOVE.B #16,D2
+00003B7A  103C 000E               1225      MOVE.B #14, D0 
+00003B7E  4E4F                    1226      TRAP #15
+00003B80  2228 003C               1227      MOVE.L (60,A0),D1
+00003B84  103C 000F               1228      MOVE.B #15, D0
+00003B88  4E4F                    1229      TRAP #15
+00003B8A  103C 000D               1230      MOVE.B #13, D0
+00003B8E  43F8 2572               1231      LEA NL,A1
+00003B92  4E4F                    1232      TRAP #15
+00003B94                          1233  
+00003B94                          1234      
+00003B94                          1235      *PC*
+00003B94  43F8 25CF               1236      LEA PCREG, A1
+00003B98  143C 0010               1237      MOVE.B #16,D2
+00003B9C  103C 000E               1238      MOVE.B #14, D0 
+00003BA0  4E4F                    1239      TRAP #15
+00003BA2  2238 26C2               1240      MOVE.L PC_STORE,D1 ; get pc val
+00003BA6  103C 000F               1241      MOVE.B #15, D0
+00003BAA  4E4F                    1242      TRAP #15
+00003BAC  103C 000D               1243      MOVE.B #13, D0
+00003BB0  43F8 2572               1244      LEA NL,A1
+00003BB4  4E4F                    1245      TRAP #15
+00003BB6                          1246      
+00003BB6                          1247      *SR*
+00003BB6  43F8 25CA               1248      LEA SRREG, A1
+00003BBA  143C 0010               1249      MOVE.B #16,D2
+00003BBE  103C 000E               1250      MOVE.B #14, D0
+00003BC2  4E4F                    1251      TRAP #15
+00003BC4  4281                    1252      CLR.L D1
+00003BC6  3238 26C8               1253      MOVE.W REG_STORE,D1
+00003BCA  103C 000F               1254      MOVE.B #15, D0
+00003BCE  4E4F                    1255      TRAP #15
+00003BD0  103C 000D               1256      MOVE.B #13, D0
+00003BD4  43F8 2572               1257      LEA NL,A1
+00003BD8  4E4F                    1258      TRAP #15
+00003BDA                          1259  
+00003BDA                          1260      
+00003BDA                          1261      *USP*
+00003BDA  40C6                    1262      MOVE.W SR,D6
+00003BDC  0886 000D               1263      BCLR #13,D6     
+00003BE0  46C6                    1264      MOVE.W D6,SR
+00003BE2  43F8 25C4               1265      LEA USPREG, A1
+00003BE6  143C 0010               1266      MOVE.B #16,D2
+00003BEA  103C 000E               1267      MOVE.B #14, D0 
+00003BEE  4E4F                    1268      TRAP #15
+00003BF0  220F                    1269      MOVE.L A7,D1
+00003BF2  103C 000F               1270      MOVE.B #15, D0
+00003BF6  4E4F                    1271      TRAP #15
+00003BF8  103C 000D               1272      MOVE.B #13, D0
+00003BFC  43F8 2572               1273      LEA NL,A1
+00003C00  4E4F                    1274      TRAP #15
+00003C02  4E41                    1275      TRAP #1 
+00003C04                          1276     
+00003C04                          1277  BSCH:
+00003C04  48E7 FFFE               1278      MOVEM.L A0-A6/D0-D7, -(SP)
+00003C08  2449                    1279      MOVE.L A1,A2    ; address1 in A0, address2 in A1, String in A5
+00003C0A  95C8                    1280      SUB.L A0,A2     ; len of search space
+00003C0C  B68A                    1281      CMP.L A2,D3     ; if smaller than string no match
+00003C0E  6E00 001E               1282      BGT NO_MATCH_BSCH   ;d3 Hhas len
+00003C12  2449                    1283      MOVE.L A1,A2
+00003C14  95C3                    1284      SUB.L D3,A2
+00003C16                          1285  FOR_C_IN_SPACE:
+00003C16  2C48                    1286      MOVE.L A0,A6    ; address1
+00003C18  3003                    1287      MOVE.W D3,D0    ; len
+00003C1A  6100 F95E               1288      BSR CHECK_MATCH
+00003C1E  4A00                    1289      TST.B D0
+00003C20  6700 001C               1290      BEQ FOUND
+00003C24  5288                    1291      ADD.L #1,A0    ; c += 1
+00003C26  B1CA                    1292      CMP.L A2,A0
+00003C28  6E00 0004               1293      BGT NO_MATCH_BSCH    ;reached end, not found
+00003C2C  60E8                    1294      BRA FOR_C_IN_SPACE
+00003C2E                          1295      
+00003C2E                          1296  NO_MATCH_BSCH:
+00003C2E  43F8 2690               1297      LEA NO_STRING_MATCH,A1       
+00003C32  103C 000D               1298      MOVE.B #13,D0
+00003C36  4E4F                    1299      TRAP #15
+00003C38  4CDF 7FFF               1300      MOVEM.L (SP)+,A0-A6/D0-D7
+00003C3C  4E75                    1301      RTS
+00003C3E                          1302  FOUND:
+00003C3E  43F8 26A2               1303      LEA STRING_MATCH,A1       ; print found text
+00003C42  103C 000D               1304      MOVE.B #13,D0
+00003C46  4E4F                    1305      TRAP #15
+00003C48  43F8 26B5               1306      LEA ADDRESS,A1  
+00003C4C  103C 000E               1307      MOVE.B #14,D0   
+00003C50  4E4F                    1308      TRAP #15
+00003C52  2208                    1309      MOVE.L A0,D1
+00003C54  143C 0010               1310      MOVE.B #16,D2   
+00003C58  103C 000F               1311      MOVE.B #15,D0   
+00003C5C  4E4F                    1312      TRAP #15
+00003C5E  43F8 26BE               1313      LEA COLON,A1    
+00003C62  103C 000E               1314      MOVE.B #14,D0
+00003C66  4E4F                    1315      TRAP #15
+00003C68  2248                    1316      MOVE.L A0,A1    
+00003C6A  103C 0000               1317      MOVE.B #0,D0
+00003C6E  3203                    1318      MOVE.W D3,D1
+00003C70  4E4F                    1319      TRAP #15                  
+00003C72  4CDF 7FFF               1320      MOVEM.L (SP)+,A0-A6/D0-D7
+00003C76  4E75                    1321      RTS
+00003C78                          1322  
+00003C78                          1323        
+00003C78                          1324      
+00006000                          1325      ORG $6000       ; Go
+00006000  700D                    1326      MOVE.L #13,D0
+00006002  43F8 20B2               1327      LEA USERPROGRAM,A1
+00006006  4E4F                    1328      TRAP #15
+00006008  6000 D03E               1329      BRA SHELL 
+0000600C                          1330      
+0000600C                          1331      *technically all these use go
+00006010                          1332      ORG $6010
+00006010= F000                    1333      DC.W $F000      ; Line F emulator
+00006012  6000 D034               1334      BRA SHELL
+00006016                          1335      
+00006020                          1336      ORG $6020
+00006020= A000                    1337      DC.W $A000      ; Line A emulator
+00006022  6000 D024               1338      BRA SHELL
+00006026                          1339      
+00006030                          1340      ORG $6030       ; Illegal instruciton
+00006030= 4AFA                    1341      DC.W $4AFA          
+00006032  6000 D014               1342      BRA SHELL
+00006036                          1343      
+00006040                          1344      ORG $6040       ; divide by zero
+00006040  7001                    1345      MOVE.L #1,D0  
+00006042  7200                    1346      MOVE.L #0,D1
+00006044  80C1                    1347      DIVU.W D1,D0
+00006046  6000 D000               1348      BRA SHELL
+0000604A                          1349  
+00006050                          1350      ORG $6050
+00006050  303C 0001               1351      MOVE.W #1,D0   ; check instruction
+00006054  4241                    1352      CLR.W D1
+00006056  4181                    1353      CHK.W D1,D0
+00006058  6000 CFEE               1354      BRA SHELL
+0000605C                          1355      
+00006060                          1356      ORG $6060
+00006060  027C 00FF               1357      ANDI.W #$00FF,SR    ;privelage error
+00006064  007C 1000               1358      OR.W #$1000, SR     
+00006068  6000 CFDE               1359      BRA SHELL
+0000606C                          1360      
+0000606C                          1361      END START
 
 No errors detected
 No warnings generated
@@ -1351,161 +1371,165 @@ No warnings generated
 SYMBOL TABLE INFORMATION
 Symbol-name         Value
 -------------------------
-A0REG               243F
-A1REG               2444
-A2REG               2448
-A3REG               244D
-A4REG               2452
-A5REG               2457
-A6REG               245C
-A7REG               2460
-ADDRESS             2581
-ADDRESS_ER          24A0
-ADDRESS_ERRORV      357A
-ALL_HELP_PROMPTS    350A
-BF                  38CC
+A0REG               2573
+A1REG               2578
+A2REG               257C
+A3REG               2581
+A4REG               2586
+A5REG               258B
+A6REG               2590
+A7REG               2594
+ADDRESS             26B5
+ADDRESS_ER          25D4
+ADDRESS_ERRORV      35AC
+ALL_HELP_PROMPTS    3532
+BF                  38FE
 BFCOMMAND           208C
 BFHELP              34BA
-BFHELPPROMPT        22EB
+BFHELPPROMPT        2357
 BF_ERR              32FC
 BF_FUNC             32A0
-BF_LOOP             38D0
-BLOOP               375E
-BMOV                38B6
+BF_LOOP             3902
+BLOOP               3790
+BMOV                38E8
 BMOVCOMMAND         208F
 BMOVHELP            34CE
-BMOVHELPPROMPT      228F
+BMOVHELPPROMPT      22FB
 BMOV_ERR            3244
-BMOV_EXIT           38C6
+BMOV_EXIT           38F8
 BMOV_FUNC           31E8
-BMOV_LOOP           38BC
-BSCH                3BD2
+BMOV_LOOP           38EE
+BSCH                3C04
 BSCHCOMMAND         2094
 BSCHHELP            34E2
-BSCHHELPPROMPT      235F
+BSCHHELPPROMPT      23E7
 BSCH_ERR            335E
 BSCH_FUNC           3308
 BTSTCOMMAND         2087
-BTSTHELPPROMPT      2271
-CHECK_ER            2503
-CHECK_INSTRV        361C
-CHECK_MATCH         3548
-COLON               258A
-COMMAND_PARSE       3688
+BTSTHELPPROMPT      22DD
+CHECK_ER            2637
+CHECK_INSTRV        364E
+CHECK_MATCH         357A
+COLON               26BE
+COMMAND_PARSE       36BA
 CR                  D
 CRCCOM              20A4
-D0REG               2468
-D1REG               246D
-D2REG               2472
-D3REG               2477
-D4REG               247C
-D5REG               2481
-D6REG               2486
-D7REG               248B
-DESC                3922
-DF                  393E
+D0REG               259C
+D1REG               25A1
+D2REG               25A6
+D3REG               25AB
+D4REG               25B0
+D5REG               25B5
+D6REG               25BA
+D7REG               25BF
+DESC                3954
+DF                  3970
 DFCOMMAND           209C
-DFHELPPROMPT        2407
+DFHELPPROMPT        248F
 DF_FUNC             33A6
-DIVIDE_ZEROV        35F8
-DIVIDE_Z_ER         24F1
+DIVIDE_ZEROV        362A
+DIVIDE_Z_ER         2625
 ECHOCOMMAND         20AD
+ECHOHELP            351E
+ECHOHELPPROMPT      2526
 ECHO_ERR            343A
 ECHO_FUNC           340C
-END_FOUND           3546
+END_FOUND           3578
 ERR                 345E
 EXITCOMMAND         209F
-EXITHELPPROMPT      2428
+EXITHELPPROMPT      255C
 EXIT_FUNC           3446
-FIND_END            3532
+FIND_END            3564
 FONT                20A8
+FONTHELP            350A
+FONTHELPROMPT       24B0
 FONT_ERR            3400
 FONT_FUNC           33D0
-FOR_C_IN_SPACE      3BE4
-FOR_C_IN_STRING     3554
-FOR_PARSE           36A8
-FOUND               3C0C
-GO                  38DC
+FOR_C_IN_SPACE      3C16
+FOR_C_IN_STRING     3586
+FOR_PARSE           36DA
+FOUND               3C3E
+GO                  390E
 GOCOMMAND           2099
 GOHELP              34F6
-GOHELPPROMPT        23CD
-GO_ADDRESS          254F
+GOHELPPROMPT        2455
+GO_ADDRESS          2683
 GO_ERR              339A
 GO_FUNC             336A
 HELPCOMMAND         2071
-HEX_CHECK           36E2
-ILLEGAL_ER          24B4
-ILLEGAL_INSTRV      35B0
+HEX_CHECK           3714
+ILLEGAL_ER          25E8
+ILLEGAL_INSTRV      35E2
 INIT                3040
 INPUT               200C
 LF                  A
-LINEAV              3640
-LINEA_ER            251B
-LINEFV              3664
-LINEF_ER            2535
-MATCH               3564
-MD                  370A
-MDSP                36F6
+LINEAV              3672
+LINEA_ER            264F
+LINEFV              3696
+LINEF_ER            2669
+MATCH               3596
+MD                  373C
+MDSP                3728
 MDSPCOMMAND         2076
 MDSPHELP            34A6
-MDSPHELPPROMPT      20CB
+MDSPHELPPROMPT      20C6
 MDSP_2_ARGS         30B2
 MDSP_ERR            30CC
 MDSP_EX             30C0
-MM                  3748
+MM                  377A
 MMCOMMAND           2081
-MMERR               38AC
+MMERR               38DE
 MMHELP              346A
-MMHELPPROMPT        21B5
-MMLLOOP             383E
-MMWLOOP             37CE
+MMHELPPROMPT        21FA
+MMLLOOP             3870
+MMWLOOP             3800
 MM_B                3130
-MM_BYTE             375C
+MM_BYTE             378E
 MM_CHECK_SIZE       3108
-MM_EXIT             38B0
+MM_EXIT             38E2
 MM_FUNC             30D8
 MM_L                314C
-MM_LONG             383C
+MM_LONG             386E
 MM_W                313E
-MM_WORD             37CC
+MM_WORD             37FE
 MSCOMMAND           2084
 MSHELP              347E
-MSHELPPROMPT        221D
+MSHELPPROMPT        2269
 MS_ERR              3294
 MS_FUNC             3250
-NL                  243E
-NO_MATCH            356A
-NO_MATCH_BSCH       3BFC
-NO_STRING_MATCH     255C
-NUM_CHECK           36D6
-PARSE_DONE          36F0
-PARSE_ERR           36EE
-PCREG               249B
-PC_STORE            258E
+NL                  2572
+NO_MATCH            359C
+NO_MATCH_BSCH       3C2E
+NO_STRING_MATCH     2690
+NUM_CHECK           3708
+PARSE_DONE          3722
+PARSE_ERR           3720
+PCREG               25CF
+PC_STORE            26C2
 PC_VAL              33B8
-PRIVALAGE_ER        24D3
-PRIVALEGEV          35D4
-REGNUM              2592
-REG_STORE           2594
+PRIVALAGE_ER        2607
+PRIVALEGEV          3606
+REGNUM              26C6
+REG_STORE           26C8
 SHELL               3048
 SHELL_PROMPT        2000
 SHELL_RESET         3044
 SORTA               31C8
 SORTD               31B4
-SORTW               390C
+SORTW               393E
 SORTWCOMMAND        207B
 SORTWHELP           3492
-SORTWHELPPROMPT     212A
+SORTWHELPPROMPT     2143
 SORTW_ERR           31DC
-SORTW_EXIT          3938
-SORTW_FOR_I         3912
-SORTW_FOR_J         3914
-SORTW_NEXT          3926
-SRREG               2496
+SORTW_EXIT          396A
+SORTW_FOR_I         3944
+SORTW_FOR_J         3946
+SORTW_NEXT          3958
+SRREG               25CA
 START               3000
-STRING_MATCH        256E
-SWAP                3930
+STRING_MATCH        26A2
+SWAP                3962
 SW_FUNC             315A
-TRAPING_HOES        3572
-USERPROMPT          20B2
-USPREG              2490
+TRAPING_HOES        35A4
+USERPROGRAM         20B2
+USPREG              25C4

@@ -88,7 +88,7 @@ STRING_MATCH DC.B 'Found the String!!',0
 ADDRESS: DC.B 'ADDRESS ',0
 COLON: DC.B ' : ',0
 
-*Storage loction for PC, SSR, etc.
+*Storage loction for PC, SSR, 
 PC_STORE DS.L 1
 REGNUM DS.B 1
 REG_STORE DS.L 1
@@ -215,7 +215,96 @@ MM_L:
 *Check for SORTW
 SW_FUNC:
     LEA SORTWCOMMAND,A6 ; put sortw into A6     
-    MOVE.W #5,D0 
+    MOVE.W #5,D0
+    BSR CHECK_MATCH
+    TST.W D0            
+    BNE BMOV_FUNC
+    
+    ADD.L #8,A5         ; this is the start of address1     
+    MOVE.L A5,A6
+    BSR FIND_END        ; find end
+    BSR COMMAND_PARSE         ; get inputs 
+    TST D1
+    BNE SORTW_ERR       ; incorrect arguemnts 
+    MOVE.L D0,D6        ; put address1 in D6
+    ADD.L #1,A6
+    MOVE.L A6,A5
+    BSR FIND_END        ; getting second address
+    BSR COMMAND_PARSE         
+    TST D1
+    BNE SORTW_ERR       ; wrong arguments
+    LEA INPUT,A5
+    ADD.L #6,A5         ; get the letter. D or A
+    CMP.B #'A',(A5)
+    BEQ SORTA
+    CMP.B #'D',(A5)
+    BEQ SORTD
+    BSR SORTWHELP        ; No letter, or incorrect letter. 
+    MOVEM.L (SP)+, A0-A6/D0-D7
+    BRA SHELL
+    
+* descending 
+SORTD:
+    MOVE.L D6,A5
+    MOVE.L D0,A6
+    MOVE.B #1,D0            
+    BSR SORTW
+    MOVEM.L (SP)+, A0-A6/D0-D7
+    BRA SHELL
+ *aascending  
+SORTA:
+    MOVE.L D6,A5
+    MOVE.L D0,A6
+    MOVE.B #0,D0
+    BSR SORTW            
+    MOVEM.L (SP)+, A0-A6/D0-D7
+    BRA SHELL
+    
+SORTW_ERR:
+    BSR SORTWHELP      ;PRINT HELP IF ERROR
+    MOVEM.L (SP)+, A0-A6/D0-D7
+    BRA SHELL
+    
+    
+BMOV_FUNC:
+    LEA BMOVCOMMAND,A6  ;bmov into A6
+    MOVE.W #4,D0
+    BSR CHECK_MATCH
+    TST.W D0          
+    BNE MS_FUNC         ; Not BMOV? go to MS
+    
+    
+    ADD.L #5,A5         ; address1 in A5     
+    MOVE.L A5,A6
+    BSR FIND_END
+    BSR COMMAND_PARSE
+    TST D1
+    BNE BMOV_ERR
+    MOVE.L D0,D5        ; address1 goes in d5
+    ADD.L #1,A6
+    MOVE.L A6,A5
+    BSR FIND_END        ; getting address2
+    BSR COMMAND_PARSE         ; 
+    MOVE.L D0,D4
+    TST D1
+    BNE BMOV_ERR
+    ADD.L #1,A6
+    MOVE.L A6,A5
+    BSR FIND_END        ; getting number of bytes to move
+    BSR COMMAND_PARSE         ; stored in D0
+    TST D1
+    BNE BMOV_ERR
+    MOVE.L D5,A5
+    MOVE.L D4,A6
+    BSR BMOV            ; call BMOV with A5=address1, A6=address2, D0=count
+    MOVEM.L (SP)+, A0-A6/D0-D7
+    BRA SHELL
+    
+BMOV_ERR:
+    BSR BMOVHELP
+    MOVEM.L (SP)+, A0-A6/D0-D7
+    BRA SHELL 
+
     
     
 MS_FUNC:
